@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EmbeddingGemma 2 - Edge Spike & Technical Review</title>
+  <style>
+    :root {
+      --bg-color: #0d1117;
+      --card-bg: #161b22;
+      --border-color: #30363d;
+      --text-main: #c9d1d9;
+      --text-muted: #8b949e;
+      --heading-color: #58a6ff;
+      --accent: #2ea043;
+      --accent-badge: #1f6feb;
+      --code-bg: #0b0e14;
+      --divider: #21262d;
+      --highlight-bg: #1c2128;
+      --case-study-border: #388bfd;
+      --case-study-bg: #111b27;
+      --personalization-border: #8957e5;
+      --personalization-bg: #161329;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.65;
+      color: var(--text-main);
+      background-color: var(--bg-color);
+      margin: 0;
+      padding: 2rem 1rem;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 2.5rem;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
+    h1, h2, h3, h4, h5 {
+      color: #f0f6fc;
+      margin-top: 1.5rem;
+      margin-bottom: 0.8rem;
+      font-weight: 600;
+    }
+    h3 {
+      font-size: 1.35rem;
+      color: var(--heading-color);
+      border-bottom: 1px solid var(--divider);
+      padding-bottom: 0.4rem;
+    }
+    h4 {
+      font-size: 1.15rem;
+      color: #79c0ff;
+      margin-top: 1.6rem;
+    }
+    h5 {
+      font-size: 1.02rem;
+      color: #d2a8ff;
+      margin-top: 1.2rem;
+    }
+    p {
+      margin: 0.8rem 0;
+    }
+    ul, ol {
+      padding-left: 1.5rem;
+      margin: 0.8rem 0;
+    }
+    li {
+      margin-bottom: 0.6rem;
+    }
+    strong {
+      color: #ffffff;
+    }
+    em {
+      color: #d2a8ff;
+    }
+    code {
+      font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
+      background-color: var(--code-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      padding: 0.15rem 0.35rem;
+      font-size: 0.9em;
+      color: #ff7b72;
+    }
+    pre {
+      background-color: var(--code-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 1rem;
+      overflow-x: auto;
+      font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
+      font-size: 0.88rem;
+      color: #c9d1d9;
+      line-height: 1.45;
+    }
+    hr {
+      border: none;
+      height: 1px;
+      background-color: var(--divider);
+      margin: 2rem 0;
+    }
+    .badge {
+      display: inline-block;
+      background-color: var(--accent-badge);
+      color: #fff;
+      font-size: 0.75rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 12px;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .badge-purple {
+      background-color: var(--personalization-border);
+    }
+    .case-study-box {
+      background-color: var(--case-study-bg);
+      border: 1px solid var(--case-study-border);
+      border-left: 6px solid var(--case-study-border);
+      border-radius: 6px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+    }
+    .case-study-box h3 {
+      margin-top: 0;
+      color: #58a6ff;
+      border-bottom: 1px solid #1f3b58;
+    }
+    .personalization-box {
+      background-color: var(--personalization-bg);
+      border: 1px solid var(--personalization-border);
+      border-left: 6px solid var(--personalization-border);
+      border-radius: 6px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+    }
+    .personalization-box h3 {
+      margin-top: 0;
+      color: #d2a8ff;
+      border-bottom: 1px solid #3c2a5e;
+    }
+    .footer {
+      margin-top: 2.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--divider);
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-align: right;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="badge">Spike &amp; Architecture Document</div>
+
+    <h3>Conversation Synthesis &amp; Technical Review</h3>
+
+    <p>Our breakdown of <strong>EmbeddingGemma 2</strong>—Google DeepMind's open multimodal embedding model built on the Gemma 4 architecture—is fully accurate.</p>
+
+    <ul>
+      <li><strong>The Core Architecture:</strong> It features a modular structure scaling from 270M (text/code) up to 740M parameters (incorporating 170M vision and 300M audio encoders). All modalities map natively into a single <strong>768-dimensional vector space</strong> utilizing an 8K token context window.</li>
+      <li><strong>Efficiency Mechanisms:</strong> It supports <strong>Matryoshka Representation Learning (MRL)</strong> for dynamic vector truncation (down to 256d or 128d to reduce database storage with negligible loss) and accepts <strong>task-steered instruction prefixes</strong> to optimize output for classification, semantic clustering, or retrieval.</li>
+      <li><strong>Deployment &amp; Edge Runtimes:</strong> It runs locally via Google AI Edge/LiteRT on mobile (Android/iOS) and via ONNX, WebGPU/WASM, or local toolchains like Ollama/llama.cpp for desktop and browser extensions.</li>
+    </ul>
+
+    <h3>Utilitarian Use Cases (On-Device, In-Browser, &amp; LoRA Adaptations)</h3>
+
+    <h4>1. The Offline Multimodal Personal Vault (Mobile / On-Device)</h4>
+    <ul>
+      <li><strong>The Problem:</strong> Users accumulate thousands of raw files on their phones—voice memos, screenshots, downloaded PDFs, code snippets, and short video clips—making keyword search frustratingly brittle.</li>
+      <li><strong>How it Works:</strong> A native mobile application runs the modular 740M EmbeddingGemma 2 package locally on device. As files land on the device, a lightweight background worker computes embeddings into a local encrypted vector database (like SQLite + vector extensions).</li>
+      <li><strong>The Utility:</strong> The user can open the app offline and type or voice-search a natural query like <em>"that clip where we discussed the project timeline"</em>. The model encodes the query locally and scans video timestamps, audio transcript vectors, and image text overlays simultaneously to pinpoint the exact moment or file without data leaving the phone.</li>
+    </ul>
+
+    <h4>2. Privacy-First Browser Extension for Contextual Web Personalization</h4>
+    <ul>
+      <li><strong>The Problem:</strong> Web applications often track user behavior across tabs by streaming page views, clicked images, and form data to cloud servers to build recommendation vectors.</li>
+      <li><strong>How it Works:</strong> A browser extension packs the lighter 440M text/vision variant running via WebGPU/WASM or local sidecar. As the user navigates documentation, code repositories, or product catalogues, the extension indexes page elements locally in the browser's isolated storage.</li>
+      <li><strong>The Utility:</strong> When visiting a complex SaaS dashboard or e-commerce portal, the extension performs zero-latency client-side RAG. It matches the current page content against the user's localized historical browsing footprint to instantly surface relevant notes, previous configurations, or matching items locally—guaranteeing total isolation from third-party trackers.</li>
+    </ul>
+
+    <h4>3. Rapid Domain Specialization via LoRA Fine-Tuning (Edge Workflow)</h4>
+    <ul>
+      <li><strong>The Problem:</strong> General-purpose embedding models often underperform when parsing hyper-niche industry taxonomy, such as proprietary internal codebases, legal nomenclature, or specialized medical documentation. Full fine-tuning is too heavy for edge deployment.</li>
+      <li><strong>How it Works:</strong> Developers take the base 270M text/code model and run a fast, parameter-efficient training pass using <strong>LoRA (Low-Rank Adaptation)</strong> via Sentence Transformers and contrastive triplet loss on a curated, private text dataset.</li>
+      <li><strong>The Utility:</strong> This produces a tiny <strong>megabyte-scale LoRA adapter file</strong> rather than a massive new model. The standard 270M base model is shipped statically inside a desktop utility or IDE extension, and the custom LoRA adapter is hot-swapped dynamically at runtime. This allows an offline desktop tool to instantly achieve enterprise-grade retrieval precision for specialized domains (like a custom programming language or corporate knowledge graph) while keeping resource consumption to an absolute minimum.</li>
+    </ul>
+
+    <hr>
+
+    <div class="case-study-box">
+      <h3>Mobile App Case Study: 864zeros ClearStreak (<code>C:\dev\clearStreak</code>)</h3>
+
+      <h4>1. Application Profile &amp; Zero-Cloud Philosophy</h4>
+      <ul>
+        <li><strong>Target:</strong> Android mobile application (<code>com.eight64zeros.clearstreak</code>).</li>
+        <li><strong>Security &amp; Air-Gap:</strong> Completely air-gapped by default (<code>android.permission.INTERNET</code> stripped from core flavor). All private check-in records and journal notes are encrypted at rest with <strong>SQLCipher 4.x</strong> (<code>recovery_enc.db</code>) protected by Android Keystore / StrongBox biometric credentials.</li>
+      </ul>
+
+      <h4>2. Current Bottleneck in ClearStreak</h4>
+      <ul>
+        <li>ClearStreak currently serves recovery passages and scripture from in-memory JSON (<code>HeritageStore</code>, <code>PassageStore</code>).</li>
+        <li>As recorded in its documentation, Android SQLite's built-in FTS5 full-text keyword indexing proved brittle and had to be dropped.</li>
+        <li>Users currently rely on static category filtering or linear browsing rather than rich semantic discovery.</li>
+      </ul>
+
+      <h4>3. The GemmaEdge On-Device Solution</h4>
+      <ul>
+        <li><strong>Edge Engine:</strong> Embed the 270M text embedding model via <strong>Google LiteRT</strong> directly inside the Android APK.</li>
+        <li><strong>Feature A — Contextual Urge &amp; Crisis Intercept ("Words for This Moment"):</strong>
+          <ul>
+            <li>When a user performs an acute check-in (e.g. logging a HALT state or entering a note like <em>"intense anxiety after argument with boss"</em>), LiteRT runs a local forward pass.</li>
+            <li>It maps the input into a 256d vector (MRL-truncated) and performs zero-latency cosine similarity matching against the pre-embedded 130+ recovery passages and scripture store.</li>
+            <li>The user is immediately presented with the most semantically relevant recovery wisdom without a single byte of their emotional struggle ever leaving the device.</li>
+          </ul>
+        </li>
+        <li><strong>Feature B — Encrypted Semantic Journal Search:</strong>
+          <ul>
+            <li>When a user searches their historical recovery journal (<em>"when was the last time I felt this isolated?"</em>), the query is vectorized locally.</li>
+            <li>Cosine search runs directly against the encrypted vector records stored inside <code>recovery_enc.db</code>, providing natural semantic search over deeply personal history with zero telemetry.</li>
+          </ul>
+        </li>
+      </ul>
+
+      <h4>4. Technical Feasibility &amp; Resource Footprint</h4>
+      <ul>
+        <li><strong>Memory &amp; Footprint:</strong> A quantized INT8 270M LiteRT model occupies ~140–160MB of RAM during inference and can be loaded on-demand.</li>
+        <li><strong>Power &amp; Thermals:</strong> Inference is event-driven (executes only upon check-in or search submission), eliminating background battery drain or thermal throttling concerns.</li>
+        <li><strong>Zero Network Dependency:</strong> Operates with 100% fidelity in airplane mode, fully adhering to ClearStreak's air-gapped mandate.</li>
+      </ul>
+    </div>
+
+    <hr>
+
+    <h3>Architectural Extensions: The "Bit" &amp; "Byte" Frontiers for Edge &amp; Local Privacy</h3>
+
+    <h4>1. The "Bit" Paradigm (Ternary / BitNet 1.58b / Low-Bit Compute)</h4>
+    <ul>
+      <li><strong>Relevance to Edge &amp; Privacy:</strong> <strong>Critical &amp; Highly Applicable</strong>.</li>
+      <li><strong>The Reality:</strong>
+        <ul>
+          <li>The real obstacle to continuous, on-device local indexing isn't just RAM; it is <strong>battery drain and thermal throttling</strong>.</li>
+          <li>In standard architectures, continuous floating-point matrix multiplication forces phone/laptop NPUs or CPU tensor cores to run hot, causing OS task managers to kill background indexing.</li>
+          <li><strong>Ternary weights ({-1, 0, 1})</strong> replace power-hungry FP/INT multiplications with basic <strong>integer addition and subtraction</strong>.</li>
+          <li><strong>Privacy Payoff:</strong> Enables true 24/7 background personal indexing even on low-end commodity devices ($100 phones, Raspberry Pi edge gateways, thin laptops) with zero reliance on cloud offloading.</li>
+        </ul>
+      </li>
+    </ul>
+
+    <h4>2. The "Byte" Paradigm (Token-Free Byte Models e.g., ByT5, BLT, MEGABYTE)</h4>
+    <ul>
+      <li><strong>Relevance to Edge &amp; Privacy:</strong> <strong>Transformative with Sequence-Length Caveats</strong>.</li>
+      <li><strong>The Reality:</strong>
+        <ul>
+          <li><strong>The Hidden Edge Tax:</strong> Gemma’s 256,000-token subword vocabulary is an immense liability at the edge. At 768 dimensions, the vocabulary embedding lookup table alone consumes <strong>~393 MB</strong> (unquantized) or ~100 MB (quantized)—meaning the vocabulary table can be larger than the entire transformer backbone in a 270M model.</li>
+          <li><strong>Byte Advantage:</strong> By ditching tokenizers and operating on raw 256 UTF-8 bytes, the vocabulary matrix shrinks from <strong>hundreds of megabytes down to kilobytes</strong>.</li>
+          <li><strong>Edge Privacy Payoff:</strong> Personal vaults ingest unstructured, noisy local files (hex dumps, raw code, unusual language scripts, encrypted headers, malformed PDFs). Tokenizers fail or fragment wildly on out-of-vocabulary data. Byte models read raw byte streams natively with zero tokenization vulnerability.</li>
+          <li><strong>The Trade-Off:</strong> Sequence length expands ~4x (1 token &approx; 4 bytes), requiring hierarchical byte patching (like BLT) or linear state-space models (MambaByte) to avoid quadratic compute spikes on long documents.</li>
+        </ul>
+      </li>
+    </ul>
+
+    <hr>
+
+    <div class="personalization-box">
+      <div class="badge badge-purple">Edge Personalization &amp; Behavioral CDP</div>
+      <h3>On-Edge Personalization: The "Local-First Alloy/CJA" Architecture (Spike Mechanics)</h3>
+
+      <h4>1. Concept: Inverting the Adobe Alloy &amp; CJA Stack</h4>
+      <ul>
+        <li><strong>The Traditional Cloud Pipeline (<code>alloy.js</code> + CJA):</strong><br>
+          <code>Browser Event</code> &rarr; <code>alloy.js</code> (XDM payload) &rarr; <code>Adobe Edge Network (Cloud)</code> &rarr; <code>Experience Platform / CJA (Cloud Segmentation)</code> &rarr; <code>Adobe Target</code> &rarr; <code>Browser UI Mutation (150-400ms roundtrip)</code>.</li>
+        <li><strong>The GemmaEdge Local-First Paradigm:</strong><br>
+          <code>Browser Event</code> &rarr; <code>Local XDM-Lite Collector</code> &rarr; <code>Local Trajectory Buffer</code> &rarr; <code>GemmaEdge 270M Vectorizer (WebGPU/WASM)</code> &rarr; <code>Local Cosine Segment Matcher</code> &rarr; <code>Instant UI Personalization (&lt;15ms, 0 bytes transmitted)</code>.</li>
+      </ul>
+
+      <h4>2. Core Mechanics for the Spike / POC</h4>
+      <pre>
+[ User Interaction ] 
+        │ (clicks, scroll depth, search, dwell time)
+        ▼
+┌────────────────────────────────────────────────────────┐
+│  1. Local XDM-Lite Event Collector                     │
+│     Captures structured behavioral events              │
+└───────────────────────┬────────────────────────────────┘
+                        ▼
+┌────────────────────────────────────────────────────────┐
+│  2. Rolling Trajectory Synthesizer                     │
+│     Maintains an in-memory ring buffer of session      │
+│     narrative (e.g., "viewed pricing -> searched API") │
+└───────────────────────┬────────────────────────────────┘
+                        ▼
+┌────────────────────────────────────────────────────────┐
+│  3. GemmaEdge On-Device Vectorizer (LiteRT / WebGPU)   │
+│     Encodes trajectory into a dense 256d Intent Vector │
+└───────────────────────┬────────────────────────────────┘
+                        ▼
+┌────────────────────────────────────────────────────────┐
+│  4. Local Vector Segment Classifier (Edge CJA)         │
+│     Cosine similarity against Segment Prototype        │
+│     Vectors (e.g. "Enterprise Evaluator", "Dev Buyer") │
+└───────────────────────┬────────────────────────────────┘
+                        ▼
+┌────────────────────────────────────────────────────────┐
+│  5. Instant Client-Side Experience Mutation            │
+│     Dynamically swaps hero CTA, reorders cards         │
+└────────────────────────────────────────────────────────┘</pre>
+
+      <h5>A. Schema Definition (XDM-Lite)</h5>
+      <p>Standardized, strongly typed event records captured locally:</p>
+      <pre>{
+  "eventType": "web.interaction.pageActivity",
+  "timestamp": "2026-10-08T12:20:00Z",
+  "web": {
+    "pageName": "docs:integrations:api-overview",
+    "category": "developer-docs",
+    "scrollDepthPercent": 82,
+    "dwellTimeSeconds": 45
+  },
+  "interaction": {
+    "searchedQuery": "webhook authentication",
+    "clickedElements": ["code-copy-button", "pricing-tier-enterprise"]
+  }
+}</pre>
+
+      <h5>B. Trajectory Compression &amp; Intent Encoding</h5>
+      <ul>
+        <li>Raw events are condensed into a semantic trajectory string: <em>"User explored API authentication docs -&gt; copied webhook code snippet -&gt; viewed enterprise SLA comparison"</em>.</li>
+        <li>The <strong>GemmaEdge 270M embedder</strong> converts this behavioral trajectory into an <strong>In-Session Intent Vector</strong> (<code>V_intent &isin; &reals;<sup>256</sup></code>).</li>
+      </ul>
+
+      <h5>C. Segment Qualification via Vector Prototypes (Edge CJA)</h5>
+      <ul>
+        <li>Instead of brittle SQL audience rules, marketing/product teams define <strong>Segment Prototypes</strong> (authored in natural language and pre-vectorized):
+          <ul>
+            <li><em>Segment 1 ("Technical Decision Maker"):</em> "Interested in developer APIs, security architecture, SSO, compliance, and enterprise deployment."</li>
+            <li><em>Segment 2 ("Price-Sensitive Trialist"):</em> "Browsing monthly pricing discounts, coupon codes, and free tier limitations."</li>
+            <li><em>Segment 3 ("Urgent Crisis / High Urgency"):</em> "Rapid clicking, bouncing across error pages, seeking immediate contact or support."</li>
+          </ul>
+        </li>
+        <li><strong>Real-Time Qualification:</strong> The local engine computes cosine similarity: <code>Score = (V_intent &bull; V_segment) / (||V_intent|| &times; ||V_segment||)</code>.</li>
+        <li>If <code>Score &ge; &tau;</code> (e.g., 0.78), the user qualifies for that segment instantly in memory.</li>
+      </ul>
+
+      <h5>D. Zero-Latency Experience Mutation</h5>
+      <ul>
+        <li>The client application receives a local reactive event: <code>onSegmentQualified('Technical Decision Maker')</code>.</li>
+        <li>The UI immediately reorders hero banners to highlight API documentation and Enterprise security rather than consumer pricing, with zero network lag and total immunity to ad-blockers and privacy regulations (GDPR/CCPA/ePrivacy).</li>
+      </ul>
+
+      <h4>3. Feasibility &amp; Scope for the Spike / POC</h4>
+      <ul>
+        <li><strong>In-Scope for POC:</strong>
+          <ol>
+            <li>A browser-side (or Node/Python simulated) event emitter generating XDM-lite clickstream payloads.</li>
+            <li>A rolling trajectory aggregator formatting events into semantic narrative chunks.</li>
+            <li>Embedding via quantized Gemma SLM.</li>
+            <li>Segment prototype cosine similarity matching with confidence scores.</li>
+            <li>A mock UI demonstrating instant DOM/state adaptation based on segment qualification.</li>
+          </ol>
+        </li>
+      </ul>
+    </div>
+
+    <div class="footer">
+      Generated for GemmaEdge Spike &bull; Path: <code>{idea}{gemmaEdge}{local-sml}{spike}.html</code>
+    </div>
+  </div>
+</body>
+</html>

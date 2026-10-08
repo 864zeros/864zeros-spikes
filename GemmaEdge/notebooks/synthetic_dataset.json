@@ -1,0 +1,150 @@
+{
+  "version": "1.0.0",
+  "name": "gemmaedge-intent-contrastive-dataset",
+  "description": "Synthetic multi-step behavioral clickstream trajectories and contrastive domain anchors for LoRA edge fine-tuning",
+  "pairs": [
+    {
+      "persona": "developer",
+      "trajectory": "Viewed page 'docs:api:webhooks' -> Clicked 'copy-curl-sample' -> Searched 'oauth bearer token'",
+      "target_anchor": "Technical Developer evaluating REST APIs, webhooks, JSON schemas, and code SDKs"
+    },
+    {
+      "persona": "developer",
+      "trajectory": "Viewed page 'api:endpoints' -> Clicked 'download-python-sdk' -> Searched 'rate limits and headers'",
+      "target_anchor": "Technical Developer evaluating REST APIs, webhooks, JSON schemas, and code SDKs"
+    },
+    {
+      "persona": "developer",
+      "trajectory": "Viewed page 'docs:schema' -> Clicked 'inspect-json-payload' -> Searched 'webhook HMAC signature'",
+      "target_anchor": "Technical Developer evaluating REST APIs, webhooks, JSON schemas, and code SDKs"
+    },
+    {
+      "persona": "developer",
+      "trajectory": "Viewed page 'docs:quickstart' -> Clicked 'node-package-install' -> Searched 'typescript definition types'",
+      "target_anchor": "Technical Developer evaluating REST APIs, webhooks, JSON schemas, and code SDKs"
+    },
+    {
+      "persona": "developer",
+      "trajectory": "Viewed page 'api:graphql' -> Clicked 'copy-query' -> Searched 'subgraph federation schema'",
+      "target_anchor": "Technical Developer evaluating REST APIs, webhooks, JSON schemas, and code SDKs"
+    },
+    {
+      "persona": "developer",
+      "trajectory": "Viewed page 'docs:cli' -> Clicked 'brew-install-command' -> Searched 'headless CI authentication'",
+      "target_anchor": "Technical Developer evaluating REST APIs, webhooks, JSON schemas, and code SDKs"
+    },
+    {
+      "persona": "developer",
+      "trajectory": "Viewed page 'github:repo' -> Clicked 'fork-repository' -> Searched 'docker container environment vars'",
+      "target_anchor": "Technical Developer evaluating REST APIs, webhooks, JSON schemas, and code SDKs"
+    },
+    {
+      "persona": "developer",
+      "trajectory": "Viewed page 'api:latency' -> Clicked 'view-benchmarks' -> Searched 'grpc vs rest p99 latency'",
+      "target_anchor": "Technical Developer evaluating REST APIs, webhooks, JSON schemas, and code SDKs"
+    },
+
+    {
+      "persona": "price-sensitive",
+      "trajectory": "Viewed page 'pricing' -> Clicked 'toggle-discount' -> Searched 'promo coupon code'",
+      "target_anchor": "Price-Sensitive Explorer looking for discounts, free trial limits, and one-time pricing"
+    },
+    {
+      "persona": "price-sensitive",
+      "trajectory": "Viewed page 'pricing:tiers' -> Clicked 'free-tier-limits' -> Searched 'student educational discount'",
+      "target_anchor": "Price-Sensitive Explorer looking for discounts, free trial limits, and one-time pricing"
+    },
+    {
+      "persona": "price-sensitive",
+      "trajectory": "Viewed page 'billing' -> Clicked 'cancel-subscription' -> Searched 'cheaper annual savings'",
+      "target_anchor": "Price-Sensitive Explorer looking for discounts, free trial limits, and one-time pricing"
+    },
+    {
+      "persona": "price-sensitive",
+      "trajectory": "Viewed page 'pricing:calculator' -> Clicked 'minimum-seats' -> Searched 'is credit card required for trial'",
+      "target_anchor": "Price-Sensitive Explorer looking for discounts, free trial limits, and one-time pricing"
+    },
+    {
+      "persona": "price-sensitive",
+      "trajectory": "Viewed page 'checkout' -> Clicked 'apply-voucher' -> Searched 'black friday lifetime deal'",
+      "target_anchor": "Price-Sensitive Explorer looking for discounts, free trial limits, and one-time pricing"
+    },
+    {
+      "persona": "price-sensitive",
+      "trajectory": "Viewed page 'faq:billing' -> Clicked 'refund-policy' -> Searched 'can i pay per use micro transactions'",
+      "target_anchor": "Price-Sensitive Explorer looking for discounts, free trial limits, and one-time pricing"
+    },
+    {
+      "persona": "price-sensitive",
+      "trajectory": "Viewed page 'pricing:compare' -> Clicked 'cheapest-plan-checkbox' -> Searched 'free open source alternative'",
+      "target_anchor": "Price-Sensitive Explorer looking for discounts, free trial limits, and one-time pricing"
+    },
+
+    {
+      "persona": "enterprise",
+      "trajectory": "Viewed page 'security' -> Clicked 'download-soc2' -> Searched 'dedicated enclave SLA 99.99'",
+      "target_anchor": "Enterprise Decision Maker reviewing SOC2 compliance, dedicated isolation, and SLA contracts"
+    },
+    {
+      "persona": "enterprise",
+      "trajectory": "Viewed page 'compliance' -> Clicked 'review-hipaa-ba' -> Searched 'custom enterprise procurement terms'",
+      "target_anchor": "Enterprise Decision Maker reviewing SOC2 compliance, dedicated isolation, and SLA contracts"
+    },
+    {
+      "persona": "enterprise",
+      "trajectory": "Viewed page 'enterprise:architecture' -> Clicked 'request-private-cloud' -> Searched 'saml sso okta'",
+      "target_anchor": "Enterprise Decision Maker reviewing SOC2 compliance, dedicated isolation, and SLA contracts"
+    },
+    {
+      "persona": "enterprise",
+      "trajectory": "Viewed page 'legal:privacy' -> Clicked 'dpa-agreement-download' -> Searched 'gdpr subprocessor liability'",
+      "target_anchor": "Enterprise Decision Maker reviewing SOC2 compliance, dedicated isolation, and SLA contracts"
+    },
+    {
+      "persona": "enterprise",
+      "trajectory": "Viewed page 'security:whitepaper' -> Clicked 'schedule-security-review' -> Searched 'fedramp authorized status'",
+      "target_anchor": "Enterprise Decision Maker reviewing SOC2 compliance, dedicated isolation, and SLA contracts"
+    },
+    {
+      "persona": "enterprise",
+      "trajectory": "Viewed page 'enterprise:contact' -> Clicked 'request-custom-msa' -> Searched 'dedicated account executive'",
+      "target_anchor": "Enterprise Decision Maker reviewing SOC2 compliance, dedicated isolation, and SLA contracts"
+    },
+    {
+      "persona": "enterprise",
+      "trajectory": "Viewed page 'sla:guarantee' -> Clicked 'penalty-terms' -> Searched 'disaster recovery rto rpo 15 minutes'",
+      "target_anchor": "Enterprise Decision Maker reviewing SOC2 compliance, dedicated isolation, and SLA contracts"
+    },
+
+    {
+      "persona": "urgent-support",
+      "trajectory": "Viewed page 'error:500' -> Clicked 'emergency-ticket' -> Searched 'urgent broken system failure'",
+      "target_anchor": "Urgent Support Seeker encountering broken workflows, outages, and requiring immediate resolution"
+    },
+    {
+      "persona": "urgent-support",
+      "trajectory": "Viewed page 'status:incident' -> Clicked 'report-outage' -> Searched 'service unavailable crash'",
+      "target_anchor": "Urgent Support Seeker encountering broken workflows, outages, and requiring immediate resolution"
+    },
+    {
+      "persona": "urgent-support",
+      "trajectory": "Viewed page 'help:diagnostics' -> Clicked 'contact-support-engineer' -> Searched 'fatal exception restart'",
+      "target_anchor": "Urgent Support Seeker encountering broken workflows, outages, and requiring immediate resolution"
+    },
+    {
+      "persona": "urgent-support",
+      "trajectory": "Viewed page 'docs:troubleshooting' -> Clicked 'restart-daemon' -> Searched 'data corrupted database rollback'",
+      "target_anchor": "Urgent Support Seeker encountering broken workflows, outages, and requiring immediate resolution"
+    },
+    {
+      "persona": "urgent-support",
+      "trajectory": "Viewed page 'incident:alert' -> Clicked 'escalate-tier-3' -> Searched 'emergency 24/7 hotline phone number'",
+      "target_anchor": "Urgent Support Seeker encountering broken workflows, outages, and requiring immediate resolution"
+    },
+    {
+      "persona": "urgent-support",
+      "trajectory": "Viewed page 'auth:locked' -> Clicked 'reset-master-key' -> Searched 'account lockout admin bypass'",
+      "target_anchor": "Urgent Support Seeker encountering broken workflows, outages, and requiring immediate resolution"
+    }
+  ]
+}

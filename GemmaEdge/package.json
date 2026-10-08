@@ -1,0 +1,21 @@
+{
+  "name": "gemma-edge-poc",
+  "version": "1.0.0",
+  "description": "864zeros GemmaEdge - On-Edge Personalization & Edge SLM Feature-Brick Architecture",
+  "type": "module",
+  "scripts": {
+    "test": "node tests/test-bricks.js",
+    "serve": "npx serve ."
+  },
+  "keywords": [
+    "864zeros",
+    "gemma",
+    "slm",
+    "edge-ai",
+    "personalization",
+    "local-first",
+    "oia"
+  ],
+  "author": "864zeros LLC",
+  "license": "UNLICENSED"
+}

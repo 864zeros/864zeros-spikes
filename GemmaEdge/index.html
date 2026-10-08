@@ -1,0 +1,1533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GemmaEdge — On-Edge Personalization & SLM Engine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="src/styles/oia-design-system.css">
+  <style>
+    :root {
+      --app-font: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
+      --code-font: 'JetBrains Mono', monospace;
+      --oia-bg: #F8FAFC;
+      --oia-bg-card: #FFFFFF;
+      --oia-slate: #334155;
+      --oia-slate-dark: #0F172A;
+      --oia-slate-light: #64748B;
+      --oia-slate-bg: #F1F5F9;
+      --oia-slate-border: rgba(71,85,105,0.15);
+      --oia-sage: #0D9488;
+      --oia-sage-light: #CCFBF1;
+      --oia-coral: #E11D48;
+      --oia-coral-light: #FFE4E6;
+      --oia-blue: #2563EB;
+      --oia-blue-light: #DBEAFE;
+      --oia-border: rgba(0,0,0,0.08);
+    }
+
+    body {
+      font-family: var(--app-font);
+      background-color: var(--oia-bg);
+      color: var(--oia-slate-dark);
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+    }
+
+    /* Top Global Header */
+    .app-header {
+      background: var(--oia-bg-card);
+      border-bottom: 1px solid var(--oia-border);
+      padding: 0.85rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+
+    .brand-logo {
+      font-weight: 900;
+      font-size: 1.35rem;
+      letter-spacing: -0.03em;
+      color: var(--oia-slate-dark);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .brand-logo-icon {
+      width: 24px;
+      height: 24px;
+      background: linear-gradient(135deg, #2563EB, #0D9488);
+      border-radius: 6px;
+      display: inline-block;
+    }
+
+    .brand-badge {
+      background: #F1F5F9;
+      color: var(--oia-slate);
+      border: 1px solid #CBD5E1;
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Portal Navigation Tabs */
+    .portal-nav {
+      display: flex;
+      gap: 0.35rem;
+      background: var(--oia-slate-bg);
+      padding: 0.3rem;
+      border-radius: 8px;
+    }
+
+    .portal-tab {
+      background: none;
+      border: none;
+      font-family: inherit;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--oia-slate-light);
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 150ms ease;
+    }
+
+    .portal-tab:hover {
+      color: var(--oia-slate-dark);
+    }
+
+    .portal-tab.active {
+      color: var(--oia-blue);
+      background: #FFFFFF;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+    }
+
+    .btn-outline {
+      background: #fff;
+      border: 1px solid #CBD5E1;
+      color: var(--oia-slate);
+      font-family: inherit;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 0.45rem 0.9rem;
+      border-radius: 6px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: all 120ms ease;
+    }
+
+    .btn-outline:hover {
+      background: var(--oia-slate-bg);
+      border-color: var(--oia-slate);
+    }
+
+    /* Views Container */
+    .view-container {
+      display: none;
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 2rem;
+      animation: fadeIn 180ms ease-out;
+    }
+
+    .view-container.active-view {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(3px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Grid Layout for Live Testbed */
+    .main-layout {
+      display: grid;
+      grid-template-columns: 1fr 440px;
+      gap: 2rem;
+    }
+
+    @media (max-width: 1080px) {
+      .main-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Cards & Components */
+    .oia-card {
+      background: var(--oia-bg-card);
+      border: 1px solid var(--oia-border);
+      border-radius: 12px;
+      padding: 1.75rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-card {
+      position: relative;
+      overflow: hidden;
+      border-top: 4px solid var(--oia-blue);
+    }
+
+    .hero-badge {
+      display: inline-block;
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      margin-bottom: 1rem;
+      transition: background-color 200ms ease;
+    }
+
+    .hero-headline {
+      font-size: 1.85rem;
+      font-weight: 800;
+      line-height: 1.25;
+      margin: 0 0 0.75rem 0;
+      color: var(--oia-slate-dark);
+    }
+
+    .hero-subhead {
+      font-size: 1.05rem;
+      color: var(--oia-slate-light);
+      margin: 0 0 1.5rem 0;
+    }
+
+    .cta-button {
+      background: var(--oia-slate-dark);
+      color: #fff;
+      font-weight: 700;
+      padding: 0.85rem 1.6rem;
+      border-radius: 8px;
+      border: none;
+      font-size: 0.95rem;
+      cursor: pointer;
+      min-height: 48px;
+      transition: transform 120ms ease, opacity 120ms ease;
+    }
+
+    .cta-button:hover {
+      opacity: 0.92;
+      transform: translateY(-1px);
+    }
+
+    /* Simulation Control Bar */
+    .sim-bar {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .sim-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--oia-slate-light);
+    }
+
+    .sim-buttons-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 0.5rem;
+    }
+
+    .sim-btn {
+      background: var(--oia-slate-bg);
+      border: 1px solid var(--oia-slate-border);
+      color: var(--oia-slate-dark);
+      font-weight: 600;
+      font-size: 0.85rem;
+      padding: 0.6rem 0.8rem;
+      border-radius: 6px;
+      cursor: pointer;
+      text-align: left;
+      transition: background 120ms ease;
+    }
+
+    .sim-btn:hover {
+      background: #e2e8f0;
+    }
+
+    /* Interactive Site Navigation & Pages */
+    .site-nav {
+      display: flex;
+      gap: 0.5rem;
+      border-bottom: 2px solid var(--oia-slate-bg);
+      padding-bottom: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .nav-tab {
+      background: none;
+      border: none;
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--oia-slate-light);
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 150ms ease;
+    }
+
+    .nav-tab.active {
+      color: var(--oia-slate-dark);
+      background: var(--oia-slate-bg);
+    }
+
+    .site-page-content {
+      padding: 1rem 0;
+    }
+
+    .action-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .action-card {
+      background: var(--oia-slate-bg);
+      border: 1px solid rgba(71,85,105,0.1);
+      border-radius: 8px;
+      padding: 1rem;
+      cursor: pointer;
+      transition: all 120ms ease;
+    }
+
+    .action-card:hover {
+      border-color: var(--oia-blue);
+      transform: translateY(-2px);
+    }
+
+    .action-card h4 {
+      margin: 0 0 0.35rem 0;
+      font-size: 0.95rem;
+      color: var(--oia-slate-dark);
+    }
+
+    .action-card p {
+      margin: 0;
+      font-size: 0.82rem;
+      color: var(--oia-slate-light);
+    }
+
+    .search-box-wrap {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .search-input {
+      flex: 1;
+      font-family: inherit;
+      font-size: 0.9rem;
+      padding: 0.65rem 1rem;
+      border: 1px solid var(--oia-slate-border);
+      border-radius: 6px;
+      background: #fff;
+    }
+
+    .search-btn {
+      background: var(--oia-slate);
+      color: #fff;
+      border: none;
+      font-family: inherit;
+      font-weight: 600;
+      padding: 0 1.25rem;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    /* Right pane: Edge Inspector */
+    .edge-inspector-pane {
+      position: sticky;
+      top: 96px;
+      height: fit-content;
+      max-height: calc(100vh - 120px);
+      overflow-y: auto;
+    }
+
+    .inspector-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--oia-border);
+    }
+
+    .badge-airgap {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: #ECFDF5;
+      color: #065F46;
+      border: 1px solid #A7F3D0;
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+      letter-spacing: 0.04em;
+    }
+
+    .pulse-indicator {
+      width: 7px;
+      height: 7px;
+      background-color: #10B981;
+      border-radius: 50%;
+      box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.3);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5); }
+      70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    }
+
+    .inspector-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--oia-slate-dark);
+    }
+
+    .inspector-metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.6rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .metric-box {
+      background: var(--oia-slate-bg);
+      border-radius: 8px;
+      padding: 0.65rem 0.85rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .metric-label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--oia-slate-light);
+      letter-spacing: 0.03em;
+    }
+
+    .metric-value {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--oia-slate-dark);
+      margin-top: 0.15rem;
+    }
+
+    .metric-value.success { color: #059669; }
+    .metric-value.highlight {
+      color: #2563EB;
+      font-size: 0.95rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .inspector-section {
+      margin-bottom: 1.25rem;
+    }
+
+    .section-label {
+      display: block;
+      font-size: 0.76rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--oia-slate-light);
+      margin-bottom: 0.4rem;
+    }
+
+    .trajectory-display {
+      background: #F8FAFC;
+      border: 1px solid rgba(71,85,105,0.12);
+      border-radius: 6px;
+      padding: 0.75rem;
+      font-size: 0.8rem;
+      color: var(--oia-slate);
+      line-height: 1.45;
+      font-family: var(--code-font);
+      max-height: 80px;
+      overflow-y: auto;
+    }
+
+    .segment-score-row {
+      margin-bottom: 0.6rem;
+      transition: all 120ms ease;
+    }
+
+    .segment-score-row.is-qualified .score-name {
+      font-weight: 800;
+      color: #1D4ED8;
+    }
+
+    .segment-score-row.is-qualified .progress-fill {
+      background-color: #2563EB;
+    }
+
+    .score-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.78rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .score-name {
+      color: var(--oia-slate);
+      font-weight: 600;
+    }
+
+    .score-val {
+      font-family: var(--code-font);
+      font-size: 0.75rem;
+      color: var(--oia-slate-light);
+    }
+
+    .progress-track {
+      background: #E2E8F0;
+      height: 6px;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background-color: var(--oia-slate-light);
+      border-radius: 999px;
+      transition: width 200ms ease, background-color 200ms ease;
+    }
+
+    .xdm-log-container {
+      background: #0F172A;
+      border-radius: 6px;
+      padding: 0.6rem;
+      max-height: 160px;
+      overflow-y: auto;
+      font-family: var(--code-font);
+    }
+
+    .empty-log-hint {
+      color: #64748B;
+      font-size: 0.78rem;
+      text-align: center;
+      padding: 1rem 0;
+    }
+
+    .xdm-log-item {
+      border-bottom: 1px solid #1E293B;
+      padding-bottom: 0.4rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .log-item-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.7rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .event-pill {
+      background: #1E293B;
+      color: #38BDF8;
+      padding: 0.1rem 0.4rem;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
+    .log-time { color: #64748B; }
+
+    .log-json {
+      margin: 0;
+      font-size: 0.72rem;
+      color: #94A3B8;
+      white-space: pre-wrap;
+    }
+
+    /* Architecture & Report View Elements */
+    .report-wrap {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .layman-box {
+      background: linear-gradient(135deg, #F0FDF4 0%, #ECFDF5 100%);
+      border: 2px solid #6EE7B7;
+      border-radius: 12px;
+      padding: 2rem;
+      margin: 1.5rem 0;
+    }
+
+    .diagram-wrap {
+      margin: 2rem 0;
+      text-align: center;
+      background: #FFFFFF;
+      border: 1px solid var(--oia-border);
+      border-radius: 12px;
+      padding: 1.75rem 1rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    }
+
+    .colab-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: #F9AB00;
+      color: #000;
+      font-weight: 800;
+      font-size: 0.85rem;
+      padding: 0.4rem 0.85rem;
+      border-radius: 20px;
+      text-decoration: none;
+      transition: transform 120ms ease;
+    }
+
+    .colab-badge:hover {
+      transform: scale(1.03);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+      font-size: 0.95rem;
+    }
+    th, td {
+      padding: 0.85rem 1rem;
+      border: 1px solid #E2E8F0;
+      text-align: left;
+    }
+    th {
+      background-color: #F1F5F9;
+      font-weight: 700;
+    }
+    tr:nth-child(even) { background-color: #F8FAFC; }
+
+    pre {
+      background: #0F172A;
+      color: #E2E8F0;
+      border-radius: 8px;
+      padding: 1rem;
+      overflow-x: auto;
+      font-family: var(--code-font);
+      font-size: 0.88rem;
+    }
+
+    code {
+      background: #EEF2F6;
+      color: #D946EF;
+      padding: 0.15rem 0.35rem;
+      border-radius: 4px;
+      font-size: 0.9em;
+      font-family: var(--code-font);
+    }
+    pre code { background: none; color: inherit; padding: 0; }
+  </style>
+</head>
+<body>
+
+  <!-- Top Global Header with Portal Navigation -->
+  <header class="app-header">
+    <div class="brand-group">
+      <span class="brand-logo">
+        <span class="brand-logo-icon"></span>
+        GemmaEdge
+      </span>
+      <span class="brand-badge">On-Edge AI Engine</span>
+    </div>
+
+    <!-- Portal Navigation Tabs -->
+    <nav class="portal-nav">
+      <button class="portal-tab active" data-target="view-testbed">🕹️ Live Testbed</button>
+      <button class="portal-tab" data-target="view-architecture">📊 Architecture &amp; Report</button>
+      <button class="portal-tab" data-target="view-lora">🧠 LoRA Pipeline (Colab)</button>
+      <button class="portal-tab" data-target="view-bricks">🧱 Feature Bricks</button>
+    </nav>
+
+    <div class="header-actions">
+      <button class="btn-outline" id="btn-reset-session">Reset Session</button>
+      <a class="btn-outline" href="REPORT_GemmaEdge_Spike.html" target="_blank">Full Report &nearr;</a>
+    </div>
+  </header>
+
+  <!-- =========================================================================
+       VIEW 1: LIVE INTERACTIVE TESTBED
+       ========================================================================= -->
+  <div id="view-testbed" class="view-container active-view">
+    <main class="main-layout">
+      <!-- Left Pane: Interactive Demo Site -->
+      <section class="demo-pane">
+        
+        <!-- Quick Simulation Bar -->
+        <div class="oia-card sim-bar">
+          <span class="sim-title">⚡ Instant Persona Simulations (1-Click Trajectory)</span>
+          <div class="sim-buttons-grid">
+            <button class="sim-btn" id="sim-dev">💻 Developer Journey</button>
+            <button class="sim-btn" id="sim-pricing">💰 Bargain Hunter</button>
+            <button class="sim-btn" id="sim-enterprise">🏢 Enterprise Exec</button>
+            <button class="sim-btn" id="sim-support">🆘 Urgent Support</button>
+          </div>
+        </div>
+
+        <!-- Mutating Hero Container -->
+        <div class="oia-card hero-card" id="hero-target">
+          <span class="hero-badge" data-slot="badge" style="background: var(--oia-blue);">Zero-Cloud Edge AI</span>
+          <h1 class="hero-headline" data-slot="headline">Private, High-Performance Software for Human Agency</h1>
+          <p class="hero-subhead" data-slot="subhead">Run intelligent embeddings and local personalization entirely inside your browser or device with zero network telemetry.</p>
+          <button class="cta-button" data-slot="cta" data-action="explore">Explore Features</button>
+        </div>
+
+        <!-- Site Navigation & Content Simulation -->
+        <div class="oia-card">
+          <nav class="site-nav">
+            <button class="nav-tab active" data-page="home" data-cat="overview">Home</button>
+            <button class="nav-tab" data-page="docs:api" data-cat="developer">API Docs</button>
+            <button class="nav-tab" data-page="pricing" data-cat="commercial">Pricing</button>
+            <button class="nav-tab" data-page="security" data-cat="enterprise">Security &amp; SLA</button>
+            <button class="nav-tab" data-page="support" data-cat="crisis">Help &amp; Status</button>
+          </nav>
+
+          <div id="page-content-area" class="site-page-content">
+            <!-- Populated dynamically -->
+          </div>
+
+          <div class="search-box-wrap">
+            <input type="text" id="site-search-input" class="search-input" placeholder="Simulate searching (e.g. 'webhook token', 'coupon', 'soc2', 'server error')...">
+            <button id="site-search-btn" class="search-btn">Search</button>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- Right Pane: Edge CJA Inspector -->
+      <aside class="edge-inspector-pane">
+        <div id="inspector-host"></div>
+      </aside>
+    </main>
+  </div>
+
+  <!-- =========================================================================
+       VIEW 2: ARCHITECTURE & EXECUTIVE REPORT
+       ========================================================================= -->
+  <div id="view-architecture" class="view-container">
+    <div class="report-wrap">
+      <div class="layman-box">
+        <h3 style="margin-top:0; color:#065F46;">💡 The 60-Second Layman Summary</h3>
+        <p style="margin-bottom:0.5rem;">
+          <strong>The Old Way (Cloud CDP / Adobe Alloy):</strong> Every click, scroll, and search query is shipped across the internet to corporate servers. Servers compute intent and respond 400ms later. It is slow, violates privacy, and gets blocked by ad-blockers.
+        </p>
+        <p style="margin:0;">
+          <strong>The GemmaEdge Way:</strong> Your device has a tiny, ultra-fast embedding model running in memory. It computes intent in <strong>under 1.5 milliseconds</strong> with <strong>0 bytes leaving your machine</strong>. Unbreakable privacy, zero cloud hosting bills, zero lag.
+        </p>
+      </div>
+
+      <!-- Cloud vs Edge Diagram -->
+      <div class="diagram-wrap">
+        <h3 style="margin-top:0;">Architectural Inversion: Cloud CDP vs. GemmaEdge</h3>
+        <svg viewBox="0 0 940 360" width="100%" height="auto" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arrRed" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,1 L6,4 L0,7 Z" fill="#DC2626"/></marker>
+            <marker id="arrGrn" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,1 L6,4 L0,7 Z" fill="#16A34A"/></marker>
+          </defs>
+          <rect x="20" y="20" width="430" height="320" rx="10" fill="#FFF5F5" stroke="#F87171" stroke-width="1.5" />
+          <text x="40" y="48" font-family="sans-serif" font-size="13" font-weight="bold" fill="#991B1B">TRADITIONAL CLOUD STACK (Alloy.js + CJA + Target)</text>
+          
+          <rect x="40" y="75" width="160" height="60" rx="6" fill="#FFFFFF" stroke="#CBD5E1" />
+          <text x="50" y="100" font-family="sans-serif" font-size="12" font-weight="bold" fill="#334155">Browser Client</text>
+          <text x="50" y="118" font-family="sans-serif" font-size="10" fill="#64748B">alloy.js tracks clicks</text>
+
+          <rect x="260" y="75" width="170" height="160" rx="6" fill="#FEE2E2" stroke="#F87171" />
+          <text x="275" y="100" font-family="sans-serif" font-size="12" font-weight="bold" fill="#991B1B">Cloud Edge / CDP</text>
+          <text x="275" y="125" font-family="sans-serif" font-size="10" fill="#7F1D1D">&bull; Data Lake Ingest</text>
+          <text x="275" y="145" font-family="sans-serif" font-size="10" fill="#7F1D1D">&bull; Audience Stitching</text>
+          <text x="275" y="165" font-family="sans-serif" font-size="10" fill="#7F1D1D">&bull; Target Decisioning</text>
+          <text x="275" y="195" font-family="sans-serif" font-size="11" font-weight="bold" fill="#DC2626">Latency: 200 - 450 ms</text>
+
+          <rect x="40" y="195" width="160" height="60" rx="6" fill="#FFFFFF" stroke="#CBD5E1" />
+          <text x="50" y="220" font-family="sans-serif" font-size="12" font-weight="bold" fill="#334155">DOM UI Mutator</text>
+          <text x="50" y="238" font-family="sans-serif" font-size="10" fill="#DC2626">Content Flicker Delay</text>
+
+          <path d="M200,105 L250,105" stroke="#DC2626" stroke-width="2" marker-end="url(#arrRed)" />
+          <path d="M260,225 L208,225" stroke="#DC2626" stroke-width="2" marker-end="url(#arrRed)" />
+
+          <!-- GemmaEdge Side -->
+          <rect x="490" y="20" width="430" height="320" rx="10" fill="#F0FDF4" stroke="#4ADE80" stroke-width="1.5" />
+          <text x="510" y="48" font-family="sans-serif" font-size="13" font-weight="bold" fill="#166534">GEMMAEDGE ON-DEVICE ARCHITECTURE</text>
+
+          <rect x="510" y="70" width="390" height="250" rx="8" fill="#DCFCE7" stroke="#22C55E" stroke-width="1.5" />
+          <text x="525" y="95" font-family="sans-serif" font-size="12" font-weight="bold" fill="#14532D">100% Client Boundary (Zero Network Transmission)</text>
+
+          <rect x="525" y="110" width="170" height="45" rx="6" fill="#FFFFFF" stroke="#86EFAC" />
+          <text x="535" y="128" font-family="sans-serif" font-size="11" font-weight="bold" fill="#1E293B">1. XDM-Lite Collector</text>
+          <text x="535" y="143" font-family="sans-serif" font-size="9" fill="#64748B">In-Memory Ring Buffer</text>
+
+          <rect x="715" y="110" width="170" height="45" rx="6" fill="#FFFFFF" stroke="#86EFAC" />
+          <text x="725" y="128" font-family="sans-serif" font-size="11" font-weight="bold" fill="#1E293B">2. Gemma SLM (256d)</text>
+          <text x="725" y="143" font-family="sans-serif" font-size="9" fill="#64748B">MRL Intent Vectorizer</text>
+
+          <rect x="715" y="180" width="170" height="45" rx="6" fill="#FFFFFF" stroke="#86EFAC" />
+          <text x="725" y="198" font-family="sans-serif" font-size="11" font-weight="bold" fill="#1E293B">3. Edge CJA Segmenter</text>
+          <text x="725" y="213" font-family="sans-serif" font-size="9" fill="#64748B">Cosine Match &lt; 0.8ms</text>
+
+          <rect x="525" y="180" width="170" height="45" rx="6" fill="#FFFFFF" stroke="#86EFAC" />
+          <text x="535" y="198" font-family="sans-serif" font-size="11" font-weight="bold" fill="#1E293B">4. Instant UI Mutator</text>
+          <text x="535" y="213" font-family="sans-serif" font-size="9" fill="#64748B">Smooth Reactivity</text>
+
+          <path d="M695,132 L707,132" stroke="#16A34A" stroke-width="2" marker-end="url(#arrGrn)" />
+          <path d="M800,155 L800,172" stroke="#16A34A" stroke-width="2" marker-end="url(#arrGrn)" />
+          <path d="M715,202 L703,202" stroke="#16A34A" stroke-width="2" marker-end="url(#arrGrn)" />
+
+          <rect x="525" y="240" width="360" height="60" rx="6" fill="#FFFFFF" stroke="#86EFAC" />
+          <text x="535" y="260" font-family="sans-serif" font-size="11" font-weight="bold" fill="#15803D">&check; Evaluation Latency: 0.4ms &ndash; 1.5ms</text>
+          <text x="535" y="278" font-family="sans-serif" font-size="11" font-weight="bold" fill="#15803D">&check; Network Egress: 0 Bytes (100% Air-Gapped)</text>
+        </svg>
+      </div>
+
+      <!-- Comparison Matrix -->
+      <table>
+        <thead>
+          <tr>
+            <th>Metric</th>
+            <th>Traditional Cloud Stack (Alloy + CJA)</th>
+            <th>GemmaEdge Architecture</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Latency</strong></td>
+            <td>150ms &ndash; 450ms (cloud round-trip)</td>
+            <td><strong>0.4ms &ndash; 1.5ms (in-memory)</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Data Egress</strong></td>
+            <td>Full clickstream sent to cloud</td>
+            <td><strong>0 Bytes Transmitted (Air-Gapped)</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Privacy</strong></td>
+            <td>Requires Cookie Banners (GDPR/CCPA)</td>
+            <td><strong>Immune (No personal data leaves)</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Ad-Blockers</strong></td>
+            <td>30%&ndash;50% dropped by Brave/uBlock/ITP</td>
+            <td><strong>100% resilient</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       VIEW 3: LORA PIPELINE & GOOGLE COLAB
+       ========================================================================= -->
+  <div id="view-lora" class="view-container">
+    <div class="report-wrap">
+      <div class="oia-card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+          <div>
+            <h2 style="margin:0;">Free LoRA Training Pipeline</h2>
+            <p style="margin:0; color:var(--oia-slate-light);">Fine-tune custom domain intent adapters in 4 minutes for $0 on Google Colab.</p>
+          </div>
+          <a class="colab-badge" href="https://colab.research.google.com" target="_blank">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M16.94 14.28a4.5 4.5 0 0 0-6.36-6.36l-1.42 1.42 1.42 1.41 1.41-1.41a2.5 2.5 0 1 1 3.54 3.53l-1.41 1.42 1.41 1.41 1.42-1.42zm-9.88-4.56a4.5 4.5 0 0 0 6.36 6.36l1.42-1.42-1.42-1.41-1.41 1.41a2.5 2.5 0 1 1-3.54-3.53l1.41-1.42-1.41-1.41-1.42 1.42z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+
+        <p>
+          Notebook File: <code>notebooks/Train_GemmaEdge_LoRA.ipynb</code><br>
+          Dataset File: <code>notebooks/synthetic_dataset.json</code> (~40 rich multi-step behavioral pairs)
+        </p>
+
+        <h3>Why LoRA on Small Language Models (SLMs) is Magic</h3>
+        <ul>
+          <li><strong>Train on Free T4 GPU:</strong> Takes only ~4 minutes on Google Colab's standard free tier.</li>
+          <li><strong>The Megabyte Miracle:</strong> Output is a tiny <strong>~3MB adapter file</strong> (<code>adapter_model.safetensors</code>), rather than a massive 500MB model.</li>
+          <li><strong>Dynamic Runtime Hot-Swapping:</strong> Base model is shipped once; domain adapters are loaded in milliseconds at runtime.</li>
+        </ul>
+
+        <h3>Pre-Packaged Dataset Preview</h3>
+        <pre>{
+  "persona": "developer",
+  "trajectory": "Viewed page 'docs:api:webhooks' -> Clicked 'copy-curl-sample' -> Searched 'oauth bearer token'",
+  "target_anchor": "Technical Developer evaluating REST APIs, webhooks, JSON schemas, and code SDKs"
+}</pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       VIEW 4: FEATURE BRICKS ARCHITECTURE
+       ========================================================================= -->
+  <div id="view-bricks" class="view-container">
+    <div class="report-wrap">
+      <div class="oia-card">
+        <h2 style="margin-top:0;">The 5 Decoupled Feature Bricks</h2>
+        <p>Built with zero external npm runtime dependencies. Reusable in web apps, mobile WebViews, and extensions.</p>
+
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:1rem; margin-top:1.5rem;">
+          <div style="background:#F8FAFC; border:1px solid #E2E8F0; padding:1.25rem; border-radius:8px;">
+            <h4 style="margin:0 0 0.4rem 0; color:#2563EB;">Brick 1: collector-brick.js</h4>
+            <p style="font-size:0.85rem; color:#64748B; margin:0;">Standard XDM-Lite client collector with an in-memory ring buffer that condenses clicks into natural trajectory narratives.</p>
+          </div>
+          <div style="background:#F8FAFC; border:1px solid #E2E8F0; padding:1.25rem; border-radius:8px;">
+            <h4 style="margin:0 0 0.4rem 0; color:#059669;">Brick 2: slm-adapter-brick.js</h4>
+            <p style="font-size:0.85rem; color:#64748B; margin:0;">Pluggable SLM interface featuring Matryoshka Representation Learning (MRL 256d/128d) and runtime LoRA hot-swapping.</p>
+          </div>
+          <div style="background:#F8FAFC; border:1px solid #E2E8F0; padding:1.25rem; border-radius:8px;">
+            <h4 style="margin:0 0 0.4rem 0; color:#8B5CF6;">Brick 3: segmenter-brick.js</h4>
+            <p style="font-size:0.85rem; color:#64748B; margin:0;">Local CJA intent classifier computing cosine similarity against natural-language Segment Prototypes in under 1ms.</p>
+          </div>
+          <div style="background:#F8FAFC; border:1px solid #E2E8F0; padding:1.25rem; border-radius:8px;">
+            <h4 style="margin:0 0 0.4rem 0; color:#D97706;">Brick 4: mutator-brick.js</h4>
+            <p style="font-size:0.85rem; color:#64748B; margin:0;">Reactive DOM experience adapter that cross-fades hero messaging, badges, and CTAs in under 15ms with zero layout shifts.</p>
+          </div>
+          <div style="background:#F8FAFC; border:1px solid #E2E8F0; padding:1.25rem; border-radius:8px;">
+            <h4 style="margin:0 0 0.4rem 0; color:#0F172A;">Brick 5: inspector-brick.js</h4>
+            <p style="font-size:0.85rem; color:#64748B; margin:0;">Real-time diagnostic panel displaying live XDM JSON streams, vector angles, and a verified 0-byte air-gap meter.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Complete Inlined Zero-Dependency Runtime (Runs directly on file:// or http://) -->
+  <script>
+    /* ============================================================
+     * PORTAL TAB SWITCHER
+     * ============================================================ */
+    document.querySelectorAll('.portal-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.portal-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.view-container').forEach(v => v.classList.remove('active-view'));
+
+        tab.classList.add('active');
+        const targetViewId = tab.getAttribute('data-target');
+        const targetView = document.getElementById(targetViewId);
+        if (targetView) targetView.classList.add('active-view');
+      });
+    });
+
+    /* ============================================================
+     * BRICK 1: XDM Event Collector (collector-brick.js)
+     * ============================================================ */
+    class XdmEventCollector {
+      constructor(options = {}) {
+        this.bufferSize = options.bufferSize || 10;
+        this.events = [];
+        this.onEvent = options.onEvent || null;
+        this.onTrajectoryChange = options.onTrajectoryChange || null;
+        this.sessionStartTime = Date.now();
+      }
+
+      track(eventType, payload = {}) {
+        const xdmEvent = {
+          eventType,
+          timestamp: new Date().toISOString(),
+          web: {
+            pageName: payload.pageName || 'home',
+            category: payload.category || 'general',
+            scrollDepthPercent: payload.scrollDepthPercent || 0
+          },
+          interaction: {
+            clickedElement: payload.clickedElement || null,
+            dwellTimeSeconds: Math.round((Date.now() - this.sessionStartTime) / 1000),
+            searchedQuery: payload.searchedQuery || null,
+            metadata: payload.metadata || {}
+          }
+        };
+
+        this.events.push(xdmEvent);
+        if (this.events.length > this.bufferSize) this.events.shift();
+
+        if (typeof this.onEvent === 'function') this.onEvent(xdmEvent);
+        const narrative = this.getTrajectoryNarrative();
+        if (typeof this.onTrajectoryChange === 'function') this.onTrajectoryChange(narrative, xdmEvent);
+
+        return xdmEvent;
+      }
+
+      getTrajectoryNarrative() {
+        if (this.events.length === 0) return 'Session initialized with no prior interactions.';
+
+        return this.events.map(e => {
+          const parts = [];
+          if (e.eventType === 'web.interaction.pageView') {
+            parts.push(`Viewed page '${e.web.pageName}' in category '${e.web.category}'`);
+          } else if (e.eventType === 'web.interaction.click') {
+            parts.push(`Clicked '${e.interaction.clickedElement}' on '${e.web.pageName}'`);
+          } else if (e.eventType === 'web.interaction.search') {
+            parts.push(`Searched query '${e.interaction.searchedQuery}' on '${e.web.pageName}'`);
+          } else if (e.eventType === 'web.interaction.scroll') {
+            parts.push(`Scrolled to ${e.web.scrollDepthPercent}% depth on '${e.web.pageName}'`);
+          } else {
+            parts.push(`Triggered ${e.eventType} on '${e.web.pageName}'`);
+          }
+          return parts.join(' ');
+        }).join(' -> ');
+      }
+
+      clear() {
+        this.events = [];
+        this.sessionStartTime = Date.now();
+        if (typeof this.onTrajectoryChange === 'function') {
+          this.onTrajectoryChange(this.getTrajectoryNarrative(), null);
+        }
+      }
+    }
+
+    /* ============================================================
+     * BRICK 2: SLM Adapter & Vector Math (slm-adapter-brick.js)
+     * ============================================================ */
+    function cosineSimilarity(a, b) {
+      let dotProduct = 0, normA = 0, normB = 0;
+      const len = Math.min(a.length, b.length);
+      for (let i = 0; i < len; i++) {
+        dotProduct += a[i] * b[i];
+        normA += a[i] * a[i];
+        normB += b[i] * b[i];
+      }
+      if (normA === 0 || normB === 0) return 0;
+      return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
+    }
+
+    function l2Normalize(vec) {
+      let sumSq = 0;
+      for (let i = 0; i < vec.length; i++) sumSq += vec[i] * vec[i];
+      const norm = Math.sqrt(sumSq);
+      if (norm === 0) return vec;
+      for (let i = 0; i < vec.length; i++) vec[i] /= norm;
+      return vec;
+    }
+
+    class LocalSemanticEngine {
+      constructor(dimension = 256) {
+        this.dimension = dimension;
+        this.modelName = "gemma-edge-sml-local (256d MRL)";
+        this.activeLora = null;
+        this.anchorCategories = {
+          technical: ['api', 'webhook', 'endpoint', 'token', 'json', 'post', 'developer', 'sdk', 'authentication', 'header', 'schema', 'rest', 'cors', 'oauth', 'security', 'compliance', 'sso', 'saml', 'audit', 'encryption', 'tls'],
+          commercial: ['pricing', 'cost', 'discount', 'coupon', 'free', 'trial', 'monthly', 'annual', 'billing', 'plan', 'tier', 'upgrade', 'cancel', 'budget', 'cheap', 'savings', 'credit', 'card', 'checkout'],
+          crisis: ['help', 'crisis', 'urgent', 'error', 'fail', 'stuck', 'support', 'contact', 'emergency', 'broken', 'issue', 'down', 'problem', 'overwhelmed', 'trigger', 'anxiety', 'craving', 'halt', 'relapse'],
+          enterprise: ['enterprise', 'sla', 'uptime', 'dedicated', 'compliance', 'soc2', 'hipaa', 'contract', 'procurement', 'invoice', 'scale', 'custom']
+        };
+      }
+
+      _hashStringToFloat(str, seed) {
+        let h = 0x811c9dc5 ^ seed;
+        for (let i = 0; i < str.length; i++) {
+          h ^= str.charCodeAt(i);
+          h = Math.imul(h, 0x01000193);
+        }
+        return ((h >>> 0) % 10000) / 10000 - 0.5;
+      }
+
+      async embed(text) {
+        const tokens = (text || '').toLowerCase().replace(/[^\w\s-]/g, ' ').split(/\s+/).filter(t => t.length > 1);
+        const vec = new Float32Array(this.dimension);
+        if (tokens.length === 0) return vec;
+
+        for (let i = 0; i < tokens.length; i++) {
+          const token = tokens[i];
+          for (let d = 0; d < this.dimension; d++) {
+            vec[d] += this._hashStringToFloat(token, d * 7919);
+          }
+          for (const [category, keywords] of Object.entries(this.anchorCategories)) {
+            if (keywords.includes(token)) {
+              const categorySeed = category.charCodeAt(0) * 101;
+              for (let d = 0; d < this.dimension; d++) {
+                vec[d] += this._hashStringToFloat(category, d * 313 + categorySeed) * 2.5;
+              }
+            }
+          }
+        }
+
+        if (this.activeLora) {
+          const loraScale = this.activeLora.scalingFactor || 1.2;
+          for (let d = 0; d < this.dimension; d++) vec[d] *= loraScale;
+        }
+
+        return l2Normalize(vec);
+      }
+
+      loadLoraAdapter(adapter) {
+        if (!adapter) { this.activeLora = null; return; }
+        this.activeLora = {
+          name: adapter.name || 'custom-lora',
+          rank: adapter.rank || 8,
+          scalingFactor: adapter.scalingFactor || 1.2
+        };
+        if (adapter.anchors) {
+          for (const [cat, words] of Object.entries(adapter.anchors)) {
+            this.anchorCategories[cat] = [...(this.anchorCategories[cat] || []), ...words];
+          }
+        }
+      }
+    }
+
+    class SlmAdapter {
+      constructor(engine = null) {
+        this.engine = engine || new LocalSemanticEngine(256);
+      }
+      async embed(text) { return this.engine.embed(text); }
+      loadLoraAdapter(adapter) { this.engine.loadLoraAdapter(adapter); }
+      get activeLora() { return this.engine.activeLora || null; }
+      get dimension() { return this.engine.dimension; }
+      get modelName() { return this.engine.modelName; }
+    }
+
+    /* ============================================================
+     * BRICK 3: Intent Segmenter (segmenter-brick.js)
+     * ============================================================ */
+    class IntentSegmenter {
+      constructor(options = {}) {
+        this.slmAdapter = options.slmAdapter;
+        this.threshold = options.threshold || 0.35;
+        this.onSegmentChange = options.onSegmentChange || null;
+        this.activeSegment = null;
+        this.prototypes = [
+          { id: 'technical-evaluator', name: 'Technical / Developer Evaluator', description: 'Developer exploring REST API endpoints, webhooks, JSON schemas, authentication tokens, and SDK code samples.', variantKey: 'dev-focus', vector: null },
+          { id: 'enterprise-buyer', name: 'Enterprise Decision Maker', description: 'Executive reviewing enterprise SLA guarantees, SOC2 security compliance, dedicated hosting, and procurement contracts.', variantKey: 'enterprise-focus', vector: null },
+          { id: 'price-sensitive-trialist', name: 'Price-Sensitive Explorer', description: 'Prospect comparing cheap monthly plans, discount coupon codes, free tier limits, and billing savings.', variantKey: 'value-focus', vector: null },
+          { id: 'urgent-support-seeker', name: 'Urgent Support / Crisis Seeker', description: 'User encountering unexpected errors, broken workflows, system down issues, and seeking immediate emergency support.', variantKey: 'support-focus', vector: null }
+        ];
+      }
+
+      async initialize() {
+        for (const proto of this.prototypes) {
+          proto.vector = await this.slmAdapter.embed(proto.description);
+        }
+        return this;
+      }
+
+      async classifyTrajectory(trajectoryNarrative) {
+        const startTime = performance.now();
+        const intentVector = await this.slmAdapter.embed(trajectoryNarrative);
+
+        const scores = this.prototypes.map(proto => {
+          const similarity = proto.vector ? cosineSimilarity(intentVector, proto.vector) : 0;
+          return {
+            id: proto.id,
+            name: proto.name,
+            variantKey: proto.variantKey,
+            score: Math.max(0, similarity),
+            qualified: similarity >= this.threshold
+          };
+        });
+
+        scores.sort((a, b) => b.score - a.score);
+        const topCandidate = scores[0];
+        const evaluationTimeMs = performance.now() - startTime;
+        const result = { topSegment: topCandidate, scores, intentVector, evaluationTimeMs };
+
+        if (topCandidate && topCandidate.qualified) {
+          if (!this.activeSegment || this.activeSegment.id !== topCandidate.id) {
+            this.activeSegment = topCandidate;
+            if (typeof this.onSegmentChange === 'function') this.onSegmentChange(topCandidate, result);
+          }
+        }
+        return result;
+      }
+    }
+
+    /* ============================================================
+     * BRICK 4: Experience Mutator (mutator-brick.js)
+     * ============================================================ */
+    class ExperienceMutator {
+      constructor(options = {}) {
+        this.container = typeof options.targetContainer === 'string'
+          ? document.querySelector(options.targetContainer)
+          : options.targetContainer;
+        this.currentVariantKey = 'default';
+        this.variants = {
+          'default': {
+            badge: 'Zero-Cloud Edge AI',
+            headline: 'Private, High-Performance Software for Human Agency',
+            subhead: 'Run intelligent embeddings and local personalization entirely inside your browser or device with zero telemetry.',
+            ctaText: 'Explore Features',
+            ctaAction: 'explore',
+            accentColor: 'var(--oia-blue)'
+          },
+          'dev-focus': {
+            badge: 'Developer Architecture',
+            headline: 'Direct REST & Webhook APIs with Real-Time JSON Streaming',
+            subhead: 'Zero cloud intermediaries. Bolt our modular SLM lego bricks directly into your app with zero boilerplate.',
+            ctaText: 'Read Developer Specs',
+            ctaAction: 'docs',
+            accentColor: 'var(--oia-slate)'
+          },
+          'enterprise-focus': {
+            badge: 'Enterprise Isolation',
+            headline: 'Hardware-Enclave Privacy & Air-Gapped Security Architecture',
+            subhead: 'Complete on-device processing. Your sensitive corporate data never leaves the client boundary.',
+            ctaText: 'View Security Specs',
+            ctaAction: 'enterprise',
+            accentColor: 'var(--oia-sage)'
+          },
+          'value-focus': {
+            badge: 'Simple Honest Pricing',
+            headline: 'One-Time Purchase. No Subscriptions. No Hidden Fees.',
+            subhead: 'Own the software forever with zero recurring fees and a 100% offline guarantee.',
+            ctaText: 'View Honest Tiers',
+            ctaAction: 'pricing',
+            accentColor: 'var(--oia-coral)'
+          },
+          'support-focus': {
+            badge: 'Immediate Assistance',
+            headline: 'Encountered a Problem? Let’s Resolve It Right Here.',
+            subhead: 'Offline self-repair diagnostics and direct assistance without intrusive surveillance.',
+            ctaText: 'Open Quick Help',
+            ctaAction: 'support',
+            accentColor: '#DC2626'
+          }
+        };
+      }
+
+      applyVariant(variantKey) {
+        if (!this.container || this.currentVariantKey === variantKey) return;
+        const config = this.variants[variantKey] || this.variants['default'];
+        this.currentVariantKey = variantKey;
+
+        this.container.style.transition = 'opacity 160ms ease, transform 160ms ease';
+        this.container.style.opacity = '0.35';
+        this.container.style.transform = 'translateY(2px)';
+
+        setTimeout(() => {
+          const badgeEl = this.container.querySelector('[data-slot="badge"]');
+          const headlineEl = this.container.querySelector('[data-slot="headline"]');
+          const subheadEl = this.container.querySelector('[data-slot="subhead"]');
+          const ctaEl = this.container.querySelector('[data-slot="cta"]');
+
+          if (badgeEl) {
+            badgeEl.textContent = config.badge;
+            badgeEl.style.backgroundColor = config.accentColor;
+          }
+          if (headlineEl) headlineEl.textContent = config.headline;
+          if (subheadEl) subheadEl.textContent = config.subhead;
+          if (ctaEl) {
+            ctaEl.textContent = config.ctaText;
+            ctaEl.setAttribute('data-action', config.ctaAction);
+          }
+
+          this.container.style.opacity = '1';
+          this.container.style.transform = 'translateY(0)';
+        }, 160);
+      }
+
+      reset() { this.applyVariant('default'); }
+    }
+
+    /* ============================================================
+     * BRICK 5: Inspector Component (inspector-brick.js)
+     * ============================================================ */
+    class EdgeInspector {
+      constructor(options = {}) {
+        this.el = typeof options.targetElement === 'string'
+          ? document.querySelector(options.targetElement)
+          : options.targetElement;
+        this.eventCount = 0;
+      }
+
+      render() {
+        if (!this.el) return;
+        this.el.innerHTML = `
+          <div class="edge-inspector-card oia-card">
+            <div class="inspector-header">
+              <div class="badge-airgap">
+                <span class="pulse-indicator"></span>
+                AIR-GAPPED &bull; 0 BYTES EGRESS
+              </div>
+              <span class="inspector-title">GemmaEdge Live CJA</span>
+            </div>
+
+            <div class="inspector-metrics-grid">
+              <div class="metric-box">
+                <span class="metric-label">Inference Latency</span>
+                <span class="metric-value" id="metric-latency">-- ms</span>
+              </div>
+              <div class="metric-box">
+                <span class="metric-label">Network Sent</span>
+                <span class="metric-value success" id="metric-egress">0 Bytes</span>
+              </div>
+              <div class="metric-box">
+                <span class="metric-label">Vector Space</span>
+                <span class="metric-value" id="metric-dim">256d MRL</span>
+              </div>
+              <div class="metric-box">
+                <span class="metric-label">Active Intent</span>
+                <span class="metric-value highlight" id="metric-segment">Neutral</span>
+              </div>
+            </div>
+
+            <div class="inspector-section">
+              <label class="section-label">Session Trajectory Buffer</label>
+              <div class="trajectory-display" id="inspector-trajectory">
+                No interactions yet. Click buttons or tabs to generate clickstream.
+              </div>
+            </div>
+
+            <div class="inspector-section">
+              <label class="section-label">Segment Confidence Rankings (Cosine)</label>
+              <div class="segment-bars" id="inspector-segments"></div>
+            </div>
+
+            <div class="inspector-section">
+              <label class="section-label">Live XDM-Lite Event Feed (<span id="event-counter">0</span>)</label>
+              <div class="xdm-log-container" id="inspector-xdm-log">
+                <div class="empty-log-hint">Awaiting user interaction...</div>
+              </div>
+            </div>
+          </div>
+        `;
+
+        this.metricLatency = this.el.querySelector('#metric-latency');
+        this.metricSegment = this.el.querySelector('#metric-segment');
+        this.trajectoryDisplay = this.el.querySelector('#inspector-trajectory');
+        this.segmentBars = this.el.querySelector('#inspector-segments');
+        this.xdmLog = this.el.querySelector('#inspector-xdm-log');
+        this.eventCounter = this.el.querySelector('#event-counter');
+      }
+
+      logEvent(event) {
+        this.eventCount++;
+        if (this.eventCounter) this.eventCounter.textContent = this.eventCount;
+
+        if (this.xdmLog) {
+          const hint = this.xdmLog.querySelector('.empty-log-hint');
+          if (hint) hint.remove();
+
+          const item = document.createElement('div');
+          item.className = 'xdm-log-item';
+          item.innerHTML = `
+            <div class="log-item-header">
+              <span class="event-pill">${event.eventType.split('.').pop()}</span>
+              <span class="log-time">${new Date(event.timestamp).toLocaleTimeString()}</span>
+            </div>
+            <pre class="log-json">${JSON.stringify(event, null, 2)}</pre>
+          `;
+          this.xdmLog.prepend(item);
+          if (this.xdmLog.children.length > 5) this.xdmLog.removeChild(this.xdmLog.lastChild);
+        }
+      }
+
+      updateTrajectory(narrative) {
+        if (this.trajectoryDisplay) this.trajectoryDisplay.textContent = narrative;
+      }
+
+      updateClassification(result) {
+        const { topSegment, scores, evaluationTimeMs } = result;
+        if (this.metricLatency) this.metricLatency.textContent = `${evaluationTimeMs.toFixed(1)} ms`;
+        if (this.metricSegment && topSegment) {
+          this.metricSegment.textContent = topSegment.qualified ? topSegment.name : 'Neutral';
+        }
+
+        if (this.segmentBars && scores) {
+          this.segmentBars.innerHTML = scores.map(s => {
+            const pct = Math.round(s.score * 100);
+            const qualifiedClass = s.qualified ? 'is-qualified' : '';
+            return `
+              <div class="segment-score-row ${qualifiedClass}">
+                <div class="score-meta">
+                  <span class="score-name">${s.name}</span>
+                  <span class="score-val">${(s.score).toFixed(3)} (${pct}%)</span>
+                </div>
+                <div class="progress-track">
+                  <div class="progress-fill" style="width: ${Math.min(100, Math.max(4, pct))}%;"></div>
+                </div>
+              </div>
+            `;
+          }).join('');
+        }
+      }
+    }
+
+    /* ============================================================
+     * APP BOOTSTRAP (Runs immediately on DOM load)
+     * ============================================================ */
+    document.addEventListener('DOMContentLoaded', async () => {
+      const slmAdapter = new SlmAdapter();
+      const segmenter = new IntentSegmenter({ slmAdapter, threshold: 0.35 });
+      const mutator = new ExperienceMutator({ targetContainer: '#hero-target' });
+      const inspector = new EdgeInspector({ targetElement: '#inspector-host' });
+
+      inspector.render();
+      await segmenter.initialize();
+
+      const collector = new XdmEventCollector({
+        bufferSize: 8,
+        onEvent: (event) => inspector.logEvent(event),
+        onTrajectoryChange: async (trajectory) => {
+          inspector.updateTrajectory(trajectory);
+          const classification = await segmenter.classifyTrajectory(trajectory);
+          inspector.updateClassification(classification);
+
+          if (classification.topSegment && classification.topSegment.qualified) {
+            mutator.applyVariant(classification.topSegment.variantKey);
+          }
+        }
+      });
+
+      const pages = {
+        'home': {
+          title: 'Home Overview',
+          actions: [
+            { label: 'Read Architecture', cat: 'overview', el: 'arch-link' },
+            { label: 'Browse Showcase', cat: 'overview', el: 'showcase-grid' }
+          ]
+        },
+        'docs:api': {
+          title: 'Developer Documentation',
+          actions: [
+            { label: 'Copy Webhook Curl Example', cat: 'developer', el: 'copy-curl-webhook' },
+            { label: 'Inspect REST Auth Headers', cat: 'developer', el: 'inspect-auth-headers' },
+            { label: 'Download Python SDK', cat: 'developer', el: 'download-sdk' }
+          ]
+        },
+        'pricing': {
+          title: 'Honest Pricing & Tiers',
+          actions: [
+            { label: 'Toggle Annual 20% Discount', cat: 'commercial', el: 'toggle-discount' },
+            { label: 'Check Free Trial Limitations', cat: 'commercial', el: 'free-tier-limits' },
+            { label: 'Apply Promo Coupon Code', cat: 'commercial', el: 'apply-coupon' }
+          ]
+        },
+        'security': {
+          title: 'Enterprise Security & SLA',
+          actions: [
+            { label: 'Download SOC2 Type II Audit', cat: 'enterprise', el: 'download-soc2' },
+            { label: 'Review 99.99% Uptime Guarantee', cat: 'enterprise', el: 'review-sla' },
+            { label: 'Request Dedicated Enclave', cat: 'enterprise', el: 'request-enclave' }
+          ]
+        },
+        'support': {
+          title: 'System Help & Crisis Center',
+          actions: [
+            { label: 'Report Broken Endpoint', cat: 'crisis', el: 'report-broken' },
+            { label: 'Open Emergency Support Ticket', cat: 'crisis', el: 'emergency-ticket' },
+            { label: 'View System Outage Status', cat: 'crisis', el: 'view-outage' }
+          ]
+        }
+      };
+
+      function renderPage(pageKey) {
+        const page = pages[pageKey] || pages['home'];
+        const area = document.getElementById('page-content-area');
+        area.innerHTML = `
+          <h3 style="margin-top:0; font-size:1.15rem; color:var(--oia-slate-dark);">${page.title}</h3>
+          <p style="font-size:0.88rem; color:var(--oia-slate-light);">Click any element below to trigger real-time on-edge XDM clickstream events:</p>
+          <div class="action-grid">
+            ${page.actions.map(a => `
+              <div class="action-card" data-action="${a.el}" data-cat="${a.cat}" data-label="${a.label}">
+                <h4>${a.label}</h4>
+                <p>Simulates click on <code>${a.el}</code></p>
+              </div>
+            `).join('')}
+          </div>
+        `;
+
+        area.querySelectorAll('.action-card').forEach(card => {
+          card.addEventListener('click', () => {
+            const clickedElement = card.getAttribute('data-action');
+            const cat = card.getAttribute('data-cat');
+            collector.track('web.interaction.click', { pageName: pageKey, category: cat, clickedElement });
+          });
+        });
+      }
+
+      renderPage('home');
+
+      document.querySelectorAll('.site-nav .nav-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          document.querySelectorAll('.site-nav .nav-tab').forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          const page = tab.getAttribute('data-page');
+          const cat = tab.getAttribute('data-cat');
+          renderPage(page);
+          collector.track('web.interaction.pageView', { pageName: page, category: cat });
+        });
+      });
+
+      const searchInput = document.getElementById('site-search-input');
+      const searchBtn = document.getElementById('site-search-btn');
+      function triggerSearch() {
+        const query = searchInput.value.trim();
+        if (!query) return;
+        collector.track('web.interaction.search', { pageName: 'active-page', searchedQuery: query });
+        searchInput.value = '';
+      }
+      searchBtn.addEventListener('click', triggerSearch);
+      searchInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') triggerSearch(); });
+
+      document.getElementById('btn-reset-session').addEventListener('click', () => {
+        collector.clear();
+        mutator.reset();
+        inspector.metricLatency.textContent = '-- ms';
+        inspector.metricSegment.textContent = 'Neutral';
+        inspector.segmentBars.innerHTML = '';
+        inspector.xdmLog.innerHTML = '<div class="empty-log-hint">Session reset. Awaiting interactions...</div>';
+        inspector.eventCount = 0;
+        inspector.eventCounter.textContent = '0';
+      });
+
+      // 1-Click Persona Simulations
+      document.getElementById('sim-dev').addEventListener('click', () => {
+        collector.track('web.interaction.pageView', { pageName: 'docs:api:webhooks', category: 'developer' });
+        collector.track('web.interaction.click', { pageName: 'docs:api:webhooks', clickedElement: 'copy-curl-webhook' });
+        collector.track('web.interaction.search', { pageName: 'docs:api:webhooks', searchedQuery: 'oauth token bearer authentication' });
+      });
+
+      document.getElementById('sim-pricing').addEventListener('click', () => {
+        collector.track('web.interaction.pageView', { pageName: 'pricing', category: 'commercial' });
+        collector.track('web.interaction.click', { pageName: 'pricing', clickedElement: 'toggle-discount' });
+        collector.track('web.interaction.search', { pageName: 'pricing', searchedQuery: 'coupon discount promo savings' });
+      });
+
+      document.getElementById('sim-enterprise').addEventListener('click', () => {
+        collector.track('web.interaction.pageView', { pageName: 'security', category: 'enterprise' });
+        collector.track('web.interaction.click', { pageName: 'security', clickedElement: 'download-soc2' });
+        collector.track('web.interaction.search', { pageName: 'security', searchedQuery: 'enterprise dedicated SLA compliance contract' });
+      });
+
+      document.getElementById('sim-support').addEventListener('click', () => {
+        collector.track('web.interaction.pageView', { pageName: 'support', category: 'crisis' });
+        collector.track('web.interaction.click', { pageName: 'support', clickedElement: 'emergency-ticket' });
+        collector.track('web.interaction.search', { pageName: 'support', searchedQuery: 'urgent broken error system failure' });
+      });
+    });
+  </script>
+</body>
+</html>

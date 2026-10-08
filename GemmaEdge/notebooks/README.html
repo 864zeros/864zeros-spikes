@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GemmaEdge — Free LoRA Training Pipeline &amp; Dual-Track Workflow</title>
+  <style>
+    :root {
+      --bg: #F8FAFC;
+      --card-bg: #FFFFFF;
+      --border: #E2E8F0;
+      --text: #1E293B;
+      --text-muted: #64748B;
+      --slate-dark: #0F172A;
+      --blue: #2563EB;
+      --blue-light: #DBEAFE;
+      --green: #059669;
+      --green-light: #D1FAE5;
+      --code-bg: #0F172A;
+      --code-text: #E2E8F0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.65;
+      color: var(--text);
+      background-color: var(--bg);
+      margin: 0;
+      padding: 2.5rem 1.5rem;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2.5rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+    }
+    h1, h2, h3 {
+      color: var(--slate-dark);
+      font-weight: 700;
+    }
+    h1 { font-size: 2rem; margin-top: 0; }
+    h2 {
+      font-size: 1.35rem;
+      margin-top: 2rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 2px solid var(--border);
+    }
+    .badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0.25rem 0.65rem;
+      border-radius: 999px;
+      margin-bottom: 1rem;
+    }
+    .badge-free { background: var(--green-light); color: var(--green); }
+    pre {
+      background: var(--code-bg);
+      color: var(--code-text);
+      border-radius: 8px;
+      padding: 1rem;
+      overflow-x: auto;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.88rem;
+    }
+    code {
+      background: #EEF2F6;
+      color: #D946EF;
+      padding: 0.15rem 0.35rem;
+      border-radius: 4px;
+      font-size: 0.9em;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+    pre code { background: none; color: inherit; padding: 0; }
+    .callout {
+      background: #F0FDF4;
+      border-left: 4px solid var(--green);
+      padding: 1rem 1.25rem;
+      border-radius: 0 8px 8px 0;
+      margin: 1.25rem 0;
+    }
+    .callout-title {
+      font-weight: 700;
+      color: #065F46;
+      margin-bottom: 0.25rem;
+    }
+    .footer {
+      margin-top: 2.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-align: right;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="badge badge-free">100% Free Tier Compatible</div>
+    <h1>GemmaEdge: Free LoRA Training Pipeline &amp; Dual-Track Workflow</h1>
+
+    <div class="callout">
+      <div class="callout-title">🌟 The Philosophy: 100% Free for Everyone</div>
+      <p style="margin: 0; font-size: 0.95rem;">
+        Anyone who downloads or clones the <code>GemmaEdge</code> repository can run the entire personalization testbed <strong>completely free</strong> on their own local machine with <strong>zero external API keys, zero cloud subscriptions, and zero infrastructure bills</strong>.
+      </p>
+    </div>
+
+    <p>
+      If users or colleagues want to train their own specialized domain LoRA adapters, they do <strong>not</strong> need a paid GPU cluster or expensive hardware:
+    </p>
+    <ul>
+      <li>The training notebook (<code>Train_GemmaEdge_LoRA.ipynb</code>) runs <strong>100% free on Google Colab's standard T4 GPU tier</strong>.</li>
+      <li>In <strong>under 5 minutes</strong>, it outputs a tiny <strong>3MB to 5MB LoRA adapter file</strong> that downloads straight to their browser.</li>
+    </ul>
+
+    <h2>⚡ The Dual-Track R&amp;D Workflow</h2>
+
+    <pre>┌─────────────────────────────────────────────────────────────┐
+│                    DUAL-TRACK R&amp;D ENGINE                    │
+│                                                             │
+│  [Track 1: R&amp;D Acceleration] (You / Gemini Ultra)           │
+│  - Synthesize 500+ rich contrastive training pairs          │
+│  - Formulate hyper-specific edge domain taxonomies          │
+│                                                             │
+│  [Track 2: Free Public Execution] (Colleagues / Open Users) │
+│  - Open Train_GemmaEdge_LoRA.ipynb in Google Colab (Free T4)│
+│  - 1-Click "Run All" (Takes ~4 minutes, Costs $0.00)        │
+│  - Downloads 3MB `gemmaedge-lora-adapter.zip`               │
+│                                                             │
+│  [Edge Deployment]                                          │
+│  - Drop 3MB adapter into GemmaEdge local folder             │
+│  - 100% Air-Gapped, Zero Network Egress                     │
+└─────────────────────────────────────────────────────────────┘</pre>
+
+    <h3>Track 1: High-Speed Acceleration via Gemini Ultra (You)</h3>
+    <ul>
+      <li>Use your <strong>Gemini Ultra / Advanced</strong> subscription as an <strong>R&amp;D data factory</strong>:
+        <ul>
+          <li>Generate hundreds of nuanced, edge-case behavioral clickstream sequences.</li>
+          <li>Construct realistic multi-intent user journeys (e.g. <em>"Enterprise security engineer on a budget with urgent Friday deadline"</em>).</li>
+          <li>Export clean JSON pairs (<code>anchor</code> trajectory &harr; <code>positive</code> domain prototype).</li>
+        </ul>
+      </li>
+    </ul>
+
+    <h3>Track 2: Frictionless Free Execution (Any User / Colleague)</h3>
+    <ul>
+      <li>Anyone can open <code>Train_GemmaEdge_LoRA.ipynb</code> directly in Google Colab.</li>
+      <li>Click <strong>Runtime &rarr; Run all</strong>.</li>
+      <li>The notebook:
+        <ol>
+          <li>Installs open-source libraries (<code>peft</code>, <code>sentence-transformers</code>, <code>bitsandbytes</code>).</li>
+          <li>Loads the base SLM.</li>
+          <li>Trains LoRA rank-8 adapter weights using contrastive <code>MultipleNegativesRankingLoss</code>.</li>
+          <li>Automatically downloads <code>gemmaedge-lora-adapter.zip</code> (~3MB) directly to their browser.</li>
+        </ol>
+      </li>
+      <li>They drop the unzipped adapter into their local <code>GemmaEdge</code> directory for zero-latency, private edge inference.</li>
+    </ul>
+
+    <h2>🚀 How to Run the Notebook in Google Colab</h2>
+    <ol>
+      <li>Open <a href="https://colab.research.google.com" target="_blank">Google Colab</a>.</li>
+      <li>Click <strong>Upload</strong> and select <code>Train_GemmaEdge_LoRA.ipynb</code>.</li>
+      <li>Ensure GPU acceleration is enabled: <strong>Runtime &rarr; Change runtime type &rarr; T4 GPU</strong>.</li>
+      <li>Click <strong>Runtime &rarr; Run all</strong>.</li>
+      <li>Once complete, your browser will prompt you to save the generated <code>gemmaedge-lora-adapter.zip</code>.</li>
+    </ol>
+
+    <div class="footer">
+      GemmaEdge &bull; Path: <code>notebooks/README.html</code>
+    </div>
+  </div>
+</body>
+</html>
