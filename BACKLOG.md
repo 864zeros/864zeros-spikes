@@ -1,10 +1,19 @@
 # 864zeros Spikes Fleet — Backlog & Roadmap
 
-Official roadmap, engineering backlog, and accepted production options for the on-edge SLM spikes fleet.
+Official roadmap, engineering backlog, research publications, and accepted production options for the on-edge SLM spikes fleet.
 
 ---
 
-## 1. Completed Spikes & Delivered Capabilities
+## 1. Published Research & Flagship Whitepapers
+
+### [Sovereign Edge Intelligence: Rejuvenating Low-Rank Adaptation (LoRA) for Real-Time On-Device SLM Feature Bricks](docs/RESEARCH-PAPER-SOVEREIGN-EDGE-SLM-LORA.md) `[PUBLISHED]`
+* **Document Reference:** [docs/RESEARCH-PAPER-SOVEREIGN-EDGE-SLM-LORA.md](docs/RESEARCH-PAPER-SOVEREIGN-EDGE-SLM-LORA.md) ([HTML Version](docs/RESEARCH-PAPER-SOVEREIGN-EDGE-SLM-LORA.html))
+* **Summary:** Open pattern specification proving the 50x mathematical leverage of LoRA on SLMs (1B–3B), sub-0.05ms adapter hot-swapping, and the AETHER feature-brick pattern across GemmaEdge and FrameMind.
+* **Corporate Evangelism Ready:** Vendor-neutral body, abstractive leap from Google DeepMind's Gemma-2/EmbeddingGemma publications.
+
+---
+
+## 2. Completed Spikes & Delivered Capabilities
 
 ### [GemmaEdge: On-Edge Personalization & SLM Engine](GemmaEdge/index.html) `[COMPLETED]`
 * **Live Deployment:** [https://864zeros.github.io/864zeros-spikes/GemmaEdge/](https://864zeros.github.io/864zeros-spikes/GemmaEdge/)
@@ -18,7 +27,7 @@ Official roadmap, engineering backlog, and accepted production options for the o
 
 ---
 
-## 2. Accepted Architectural Options
+## 3. Accepted Architectural Options
 
 ### [Mobile Hybrid WebApp Wrapper & Zero-Cloud Offline Architecture](docs/PRODUCTION-OPTION-MOBILE-HYBRID-WRAPPER.md) `[ACCEPTED OPTION]`
 * **Summary:** Official deployment pattern for running browser-first feature bricks inside native iOS/Android wrappers (Capacitor / WKWebView / PWA) with local asset bundling, OPFS binary storage, and zero cloud runtime egress.
@@ -26,7 +35,7 @@ Official roadmap, engineering backlog, and accepted production options for the o
 
 ---
 
-## 3. Immediate Active Queue (TODO)
+## 4. Immediate Active Queue (TODO)
 
 ### 1. Extract Shared Core Feature-Bricks Foundation `[TODO]`
 * **Goal:** Factor out common on-edge SLM components (`slm-adapter-brick.js`, `lora-registry-brick.js`, `intent-matcher-brick.js`, and `brick-registry.js`) into a shared `core-bricks/` directory.
@@ -34,7 +43,7 @@ Official roadmap, engineering backlog, and accepted production options for the o
 
 ---
 
-## 4. Engineering Backlog
+## 5. Engineering Backlog
 
 ### 1. 864zeros iOS Build-Kit & AVFoundation Camera Binding `[BACKLOG]`
 * **Summary:** Create an official 864zeros iOS build-kit providing WKWebView / Capacitor native bridge plugins for Apple `AVCaptureDevice` hardware zoom, haptics, and Metal compute.

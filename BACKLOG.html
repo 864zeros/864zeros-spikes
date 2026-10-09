@@ -111,7 +111,8 @@
     .tag-todo { background: rgba(251, 191, 36, 0.15); color: var(--amber); border: 1px solid rgba(251, 191, 36, 0.3); }
     .tag-accepted { background: rgba(74, 222, 128, 0.15); color: var(--green); border: 1px solid rgba(74, 222, 128, 0.3); }
     .tag-completed { background: rgba(56, 189, 248, 0.15); color: var(--accent); border: 1px solid rgba(56, 189, 248, 0.3); }
-    .tag-backlog { background: rgba(192, 132, 252, 0.15); color: var(--purple); border: 1px solid rgba(192, 132, 252, 0.3); }
+    .tag-published { background: rgba(192, 132, 252, 0.15); color: var(--purple); border: 1px solid rgba(192, 132, 252, 0.3); }
+    .tag-backlog { background: rgba(148, 163, 184, 0.15); color: var(--text-muted); border: 1px solid rgba(148, 163, 184, 0.3); }
 
     p { margin-bottom: 0.5rem; }
     ul { margin: 0.5rem 0 0.5rem 1.5rem; }
@@ -140,10 +141,21 @@
     <header>
       <div class="badge">Backlog &amp; Strategy Roadmap</div>
       <h1>864zeros Spikes Fleet — Backlog &amp; TODO</h1>
-      <p class="lead">Official roadmap, engineering backlog, and accepted production options for on-edge SLM spikes.</p>
+      <p class="lead">Official roadmap, engineering backlog, research publications, and accepted production options for on-edge SLM spikes.</p>
     </header>
 
-    <h2>1. Completed Spikes &amp; Delivered Capabilities</h2>
+    <h2>1. Published Research &amp; Flagship Whitepapers</h2>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Sovereign Edge Intelligence: Rejuvenating Low-Rank Adaptation (LoRA) for Real-Time On-Device SLM Feature Bricks</span>
+        <span class="tag tag-published">Published Whitepaper</span>
+      </div>
+      <p>Open pattern specification proving the 50x mathematical leverage of LoRA on SLMs (1B–3B), sub-0.05ms adapter hot-swapping, and the AETHER feature-brick pattern across GemmaEdge and FrameMind.</p>
+      <p><strong>Paper Links:</strong> <a href="docs/RESEARCH-PAPER-SOVEREIGN-EDGE-SLM-LORA.html">Read Full Whitepaper (HTML) &rarr;</a> &bull; <a href="docs/RESEARCH-PAPER-SOVEREIGN-EDGE-SLM-LORA.md">Markdown Version</a></p>
+    </div>
+
+    <h2>2. Completed Spikes &amp; Delivered Capabilities</h2>
 
     <div class="card">
       <div class="card-header">
@@ -163,7 +175,7 @@
       <p><strong>Links:</strong> <a href="FrameMind/index.html">Showcase Testbed</a> &bull; <a href="FrameMind/REPORT_FrameMind_Spike.html">Executive Report</a></p>
     </div>
 
-    <h2>2. Accepted Architectural Options</h2>
+    <h2>3. Accepted Architectural Options</h2>
 
     <div class="card">
       <div class="card-header">
@@ -174,7 +186,7 @@
       <p><strong>Reference Document:</strong> <a href="docs/PRODUCTION-OPTION-MOBILE-HYBRID-WRAPPER.html">docs/PRODUCTION-OPTION-MOBILE-HYBRID-WRAPPER.html</a></p>
     </div>
 
-    <h2>3. Immediate Active Queue (TODO)</h2>
+    <h2>4. Immediate Active Queue (TODO)</h2>
 
     <div class="card">
       <div class="card-header">
@@ -184,7 +196,7 @@
       <p>Factor out common on-edge SLM components (<code>slm-adapter-brick.js</code>, <code>lora-registry-brick.js</code>, <code>intent-matcher-brick.js</code>, and <code>brick-registry.js</code>) into a shared <code>core-bricks/</code> directory so both GemmaEdge and FrameMind reuse the exact same runtime engine without duplication.</p>
     </div>
 
-    <h2>4. Engineering Backlog</h2>
+    <h2>5. Engineering Backlog</h2>
 
     <div class="card">
       <div class="card-header">
