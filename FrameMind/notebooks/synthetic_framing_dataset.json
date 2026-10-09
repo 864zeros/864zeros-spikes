@@ -1,0 +1,56 @@
+[
+  {
+    "genre": "podcast",
+    "transcript": "Host: So I told him that's not a bug, that's a feature! [laughter] Guest: Oh man, classic! [laughter]",
+    "acoustic_cues": ["high_energy_spike", "laughter", "dialogue_shift"],
+    "target_shot": "PUNCHLINE_PUSH",
+    "target_zoom": 1.35,
+    "target_pan_x": 0.5,
+    "rationale": "High-energy punchline followed by laughter requires instant push-in on speaker to capture comedic facial expression."
+  },
+  {
+    "genre": "podcast",
+    "transcript": "Host: What do you think about the new model? Guest: Honestly, I think it changes the game completely.",
+    "acoustic_cues": ["conversational", "speaker_hand_off"],
+    "target_shot": "BANTER_PING_PONG",
+    "target_zoom": 1.15,
+    "target_pan_x": 0.7,
+    "rationale": "Direct question and answer transition requires smooth pan to the responding guest."
+  },
+  {
+    "genre": "fitness",
+    "transcript": "Trainer: Alright team, drop down for squats! Three, two, one, all the way down, chest up, knees out!",
+    "acoustic_cues": ["cadence_anchor", "rep_count", "form_instruction"],
+    "target_shot": "FORM_CHECK_WIDE",
+    "target_zoom": 1.0,
+    "target_pan_x": 0.5,
+    "rationale": "Compound exercise rep sequence requires full-body wide shot to verify joint angles and biomechanics."
+  },
+  {
+    "genre": "fitness",
+    "transcript": "Trainer: Last three reps! Dig deep! Push! Two! One! Lock it out! Excellent work!",
+    "acoustic_cues": ["motivational_pulse", "volume_spike", "tempo_acceleration"],
+    "target_shot": "MOTIVATIONAL_PULSE",
+    "target_zoom": 1.22,
+    "target_pan_x": 0.5,
+    "rationale": "Final rep fatigue demands rhythmic visual pulse synchronized with vocal tempo to heighten intensity."
+  },
+  {
+    "genre": "keynote",
+    "transcript": "Speaker: In five years, software won't just assist us. It will reason alongside every single human on earth. [applause]",
+    "acoustic_cues": ["slow_cadence", "rhetorical_pause", "applause"],
+    "target_shot": "KEYNOTE_SLOW_PUSH",
+    "target_zoom": 1.25,
+    "target_pan_x": 0.5,
+    "rationale": "Visionary rhetorical statement warrants slow cinematic zoom-in building audience gravitas."
+  },
+  {
+    "genre": "keynote",
+    "transcript": "Speaker: Now, let's turn our attention to the second pillar of our architecture: edge execution.",
+    "acoustic_cues": ["conversational", "topic_shift"],
+    "target_shot": "NEUTRAL_ANCHOR",
+    "target_zoom": 1.1,
+    "target_pan_x": 0.5,
+    "rationale": "Expository agenda transition resets framing to a balanced medium shot."
+  }
+]

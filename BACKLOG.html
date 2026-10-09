@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>864zeros Spikes Fleet — Backlog &amp; Roadmap</title>
+  <style>
+    :root {
+      --bg: #090d16;
+      --card-bg: #111827;
+      --border: #1f293d;
+      --text: #e2e8f0;
+      --text-muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-glow: rgba(56, 189, 248, 0.15);
+      --green: #4ade80;
+      --amber: #fbbf24;
+      --purple: #c084fc;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      line-height: 1.65;
+      padding: 2.5rem 1.5rem;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    header {
+      margin-bottom: 2.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 0.25rem 0.65rem;
+      border-radius: 9999px;
+      background: var(--accent-glow);
+      color: var(--accent);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      margin-bottom: 0.75rem;
+    }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      color: #f8fafc;
+      margin-bottom: 0.5rem;
+    }
+
+    .lead {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+    }
+
+    h2 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #f1f5f9;
+      margin: 2.25rem 0 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #f8fafc;
+    }
+
+    .tag {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+
+    .tag-todo { background: rgba(251, 191, 36, 0.15); color: var(--amber); border: 1px solid rgba(251, 191, 36, 0.3); }
+    .tag-accepted { background: rgba(74, 222, 128, 0.15); color: var(--green); border: 1px solid rgba(74, 222, 128, 0.3); }
+    .tag-completed { background: rgba(56, 189, 248, 0.15); color: var(--accent); border: 1px solid rgba(56, 189, 248, 0.3); }
+    .tag-backlog { background: rgba(192, 132, 252, 0.15); color: var(--purple); border: 1px solid rgba(192, 132, 252, 0.3); }
+
+    p { margin-bottom: 0.5rem; }
+    ul { margin: 0.5rem 0 0.5rem 1.5rem; }
+    li { margin-bottom: 0.35rem; }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    a:hover { text-decoration: underline; }
+
+    footer {
+      margin-top: 3.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="badge">Backlog &amp; Strategy Roadmap</div>
+      <h1>864zeros Spikes Fleet — Backlog &amp; TODO</h1>
+      <p class="lead">Official roadmap, engineering backlog, and accepted production options for on-edge SLM spikes.</p>
+    </header>
+
+    <h2>1. Completed Spikes &amp; Delivered Capabilities</h2>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">GemmaEdge: On-Edge Personalization &amp; SLM Engine</span>
+        <span class="tag tag-completed">Completed</span>
+      </div>
+      <p>In-memory behavioral vectorizer, 256d MRL projection, LoRA hot-swapping, zero-latency DOM mutator.</p>
+      <p><strong>Links:</strong> <a href="GemmaEdge/">Showcase Portal</a> &bull; <a href="GemmaEdge/REPORT_GemmaEdge_Spike.html">Executive Report</a></p>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">FrameMind Tier 1: Interactive Web/PWA Cinematography Testbed</span>
+        <span class="tag tag-completed">Completed</span>
+      </div>
+      <p>Audio/ASR trajectory ingestion, 3 domain LoRAs hot-swapped in 0.047ms, 0.3ms shot directing, 60fps cubic-bezier 9:16 canvas reframing, zero network egress.</p>
+      <p><strong>Links:</strong> <a href="FrameMind/index.html">Showcase Testbed</a> &bull; <a href="FrameMind/REPORT_FrameMind_Spike.html">Executive Report</a></p>
+    </div>
+
+    <h2>2. Accepted Architectural Options</h2>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Mobile Hybrid WebApp Wrapper &amp; Zero-Cloud Offline Architecture</span>
+        <span class="tag tag-accepted">Accepted Option</span>
+      </div>
+      <p>Official deployment pattern for running browser-first feature bricks inside native iOS/Android wrappers (Capacitor / WKWebView / PWA) with local asset bundling, OPFS binary storage, and zero cloud runtime egress.</p>
+      <p><strong>Reference Document:</strong> <a href="docs/PRODUCTION-OPTION-MOBILE-HYBRID-WRAPPER.html">docs/PRODUCTION-OPTION-MOBILE-HYBRID-WRAPPER.html</a></p>
+    </div>
+
+    <h2>3. Immediate Active Queue (TODO)</h2>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Extract Shared Core Feature-Bricks Foundation</span>
+        <span class="tag tag-todo">TODO</span>
+      </div>
+      <p>Factor out common on-edge SLM components (<code>slm-adapter-brick.js</code>, <code>lora-registry-brick.js</code>, <code>intent-matcher-brick.js</code>, and <code>brick-registry.js</code>) into a shared <code>core-bricks/</code> directory so both GemmaEdge and FrameMind reuse the exact same runtime engine without duplication.</p>
+    </div>
+
+    <h2>4. Engineering Backlog</h2>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">864zeros iOS Build-Kit &amp; AVFoundation Camera Binding</span>
+        <span class="tag tag-backlog">Backlog</span>
+      </div>
+      <p>Create an official 864zeros iOS build-kit providing WKWebView / Capacitor native bridge plugins for Apple <code>AVCaptureDevice</code> hardware zoom, haptics, and Metal compute. Deferred until Mac CI / cloud macOS runner is configured.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">FrameMind Tier 2: Native Android CameraX Implementation</span>
+        <span class="tag tag-backlog">Backlog</span>
+      </div>
+      <p>Port the proven FrameMind feature bricks into the existing 864zeros Android build-kit using Kotlin, Google CameraX, and MediaPipe LLM Inference runtime.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">GemmaEdge Workplace Internal Repo Extraction</span>
+        <span class="tag tag-backlog">Backlog</span>
+      </div>
+      <p>Package the white-labeled GemmaEdge package (free of LLC branding) for deployment to the user's internal enterprise GitHub organization.</p>
+    </div>
+
+    <footer>
+      <span>864zeros Spikes Management</span>
+      <span>On-Edge SLM Fleet</span>
+    </footer>
+  </div>
+</body>
+</html>

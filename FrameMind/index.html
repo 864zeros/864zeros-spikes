@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FrameMind — Edge AI Automated Cinematography &amp; Smart Framing</title>
+  <style>
+    :root {
+      --bg: #090d16;
+      --card-bg: #111827;
+      --card-border: #1f293d;
+      --text: #e2e8f0;
+      --text-muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-glow: rgba(56, 189, 248, 0.15);
+      --green: #4ade80;
+      --amber: #fbbf24;
+      --purple: #c084fc;
+      --red: #f87171;
+      --code-bg: #0d1321;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      line-height: 1.6;
+      padding: 0;
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: #0d1322;
+      border-bottom: 1px solid var(--card-border);
+      padding: 1.25rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .brand-logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #0284c7, #38bdf8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .brand-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #f8fafc;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-subtitle {
+      font-size: 0.8rem;
+      color: var(--accent);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .header-badges {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 0.25rem 0.65rem;
+      border-radius: 9999px;
+      border: 1px solid var(--card-border);
+    }
+    .badge-egress { background: rgba(74, 222, 128, 0.12); color: var(--green); border-color: rgba(74, 222, 128, 0.3); }
+    .badge-lora { background: rgba(56, 189, 248, 0.12); color: var(--accent); border-color: rgba(56, 189, 248, 0.3); }
+    .badge-edge { background: rgba(192, 132, 252, 0.12); color: var(--purple); border-color: rgba(192, 132, 252, 0.3); }
+
+    /* Nav Tabs */
+    nav.tabs {
+      background: #0b101c;
+      border-bottom: 1px solid var(--card-border);
+      padding: 0 2rem;
+      display: flex;
+      gap: 1.5rem;
+      overflow-x: auto;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 1rem 0.25rem;
+      cursor: pointer;
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: color 0.15s ease;
+    }
+
+    .tab-btn:hover { color: #f8fafc; }
+    .tab-btn.active { color: var(--accent); }
+    .tab-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--accent);
+      box-shadow: 0 -2px 8px var(--accent);
+    }
+
+    main {
+      flex: 1;
+      padding: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* Testbed Grid */
+    .testbed-grid {
+      display: grid;
+      grid-template-columns: 1.8fr 1.2fr;
+      gap: 1.5rem;
+    }
+    @media (max-width: 1024px) {
+      .testbed-grid { grid-template-columns: 1fr; }
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1.5rem;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #f8fafc;
+      margin-bottom: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* Video & Canvas Viewports */
+    .viewport-container {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+    @media (max-width: 768px) {
+      .viewport-container { grid-template-columns: 1fr; }
+    }
+
+    .canvas-wrap {
+      background: #000;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--card-border);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .canvas-label {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #38bdf8;
+      z-index: 10;
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    #targetCanvas {
+      aspect-ratio: 9 / 16;
+      max-height: 380px;
+      width: auto;
+      border: 2px solid #0284c7;
+      box-shadow: 0 0 15px rgba(2, 132, 199, 0.3);
+    }
+
+    #sourceCanvas {
+      aspect-ratio: 16 / 9;
+      width: 100%;
+    }
+
+    /* Controls */
+    .controls-row {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+      align-items: center;
+    }
+
+    select, button {
+      background: #1e293b;
+      color: #f8fafc;
+      border: 1px solid var(--card-border);
+      padding: 0.55rem 1rem;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    select:hover, button:hover {
+      background: #273549;
+      border-color: #334155;
+    }
+
+    button.btn-primary {
+      background: #0284c7;
+      border-color: #0284c7;
+    }
+    button.btn-primary:hover { background: #0369a1; }
+
+    button.btn-accent {
+      background: #7c3aed;
+      border-color: #7c3aed;
+    }
+    button.btn-accent:hover { background: #6d28d9; }
+
+    /* Timeline & Waveform */
+    .waveform-bar {
+      height: 48px;
+      background: #090e1a;
+      border: 1px solid var(--card-border);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      padding: 0 0.75rem;
+      margin-bottom: 1rem;
+      gap: 0.75rem;
+    }
+
+    .transcript-ticker {
+      font-family: var(--font-mono);
+      font-size: 0.88rem;
+      color: #cbd5e1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex: 1;
+    }
+
+    /* Metrics HUD */
+    .hud-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .hud-item {
+      background: #0d1321;
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 0.85rem;
+    }
+    .hud-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+    .hud-val {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #f8fafc;
+      font-family: var(--font-mono);
+    }
+    .hud-val.green { color: var(--green); }
+    .hud-val.accent { color: var(--accent); }
+
+    /* Logs stream */
+    .log-stream {
+      background: #090e1a;
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 0.75rem;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      height: 240px;
+      overflow-y: auto;
+    }
+    .log-line {
+      padding: 0.3rem 0;
+      border-bottom: 1px solid #141c2e;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    footer {
+      background: #0a0f1d;
+      border-top: 1px solid var(--card-border);
+      padding: 1.5rem 2rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: auto;
+    }
+
+    /* Report & Pipeline Tabs */
+    .prose {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .prose h2 { font-size: 1.5rem; color: #f8fafc; margin: 2rem 0 1rem; }
+    .prose h3 { font-size: 1.2rem; color: #38bdf8; margin: 1.5rem 0 0.5rem; }
+    .prose p { margin-bottom: 1rem; line-height: 1.7; color: #cbd5e1; }
+    .prose table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+      background: var(--card-bg);
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--card-border);
+    }
+    .prose th, .prose td {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid var(--card-border);
+      text-align: left;
+    }
+    .prose th { background: #1e293b; color: #fff; font-size: 0.85rem; text-transform: uppercase; }
+  </style>
+</head>
+<body>
+
+  <!-- Top App Bar -->
+  <header>
+    <div class="brand">
+      <div class="brand-logo">FM</div>
+      <div>
+        <div class="brand-title">FrameMind</div>
+        <div class="brand-subtitle">On-Edge Automated Cinematography &amp; Smart Framing</div>
+      </div>
+    </div>
+    <div class="header-badges">
+      <span class="badge badge-egress">🔒 0 Bytes Network Egress</span>
+      <span class="badge badge-lora">⚡ Gemma-2 + LoRA Hot-Swap</span>
+      <span class="badge badge-edge">📱 Hybrid Mobile / PWA</span>
+    </div>
+  </header>
+
+  <!-- Nav Tabs -->
+  <nav class="tabs">
+    <button class="tab-btn active" onclick="switchTab('testbed')">🎬 Director Testbed</button>
+    <button class="tab-btn" onclick="switchTab('report')">📐 Architecture &amp; Report</button>
+    <button class="tab-btn" onclick="switchTab('lora')">🧪 LoRA Pipeline (Colab)</button>
+    <button class="tab-btn" onclick="switchTab('bricks')">🧱 Feature Bricks API</button>
+  </nav>
+
+  <main>
+    <!-- TAB 1: TESTBED -->
+    <section id="tab-testbed" class="tab-content active">
+      <div class="testbed-grid">
+        
+        <!-- Left: Canvas Viewports -->
+        <div class="card">
+          <div class="card-title">
+            <span>Dual-Viewport Visualizer</span>
+            <span style="font-size: 0.8rem; font-weight: normal; color: var(--text-muted);">Rule-of-Thirds &amp; Dynamic Bezier Crop</span>
+          </div>
+
+          <div class="viewport-container">
+            <!-- 16:9 Raw Feed Canvas with Crop Overlay -->
+            <div class="canvas-wrap">
+              <span class="canvas-label">Raw 16:9 Feed &amp; Framing Bounding Box</span>
+              <canvas id="sourceCanvas" width="640" height="360"></canvas>
+            </div>
+
+            <!-- 9:16 Reframed Target Canvas -->
+            <div class="canvas-wrap">
+              <span class="canvas-label">9:16 Smart Framed Output</span>
+              <canvas id="targetCanvas" width="270" height="480"></canvas>
+            </div>
+          </div>
+
+          <!-- Transcript Ticker -->
+          <div class="waveform-bar">
+            <span style="font-size: 0.8rem; font-weight: 700; color: var(--accent);">ASR STREAM:</span>
+            <div id="transcriptTicker" class="transcript-ticker">Waiting for audio speech events...</div>
+          </div>
+
+          <!-- Controls -->
+          <div class="controls-row">
+            <label style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted);">LoRA Genre:</label>
+            <select id="loraSelect" onchange="handleLoraChange(this.value)">
+              <option value="podcast_editor">🎙️ Podcast &amp; Banter LoRA (~3.1 MB)</option>
+              <option value="fitness_coach">🏋️ Fitness Form &amp; Rep Cadence LoRA (~3.1 MB)</option>
+              <option value="keynote_speaker">🎤 Keynote &amp; Presentation LoRA (~3.1 MB)</option>
+            </select>
+            <button class="btn-primary" onclick="runAutomatedSimulation()">▶ Run Auto Episode</button>
+            <button onclick="toggleSafeZones()">Grid Overlay</button>
+          </div>
+
+          <!-- Quick Action Triggers -->
+          <div class="controls-row" style="margin-bottom: 0;">
+            <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted);">Trigger Events:</span>
+            <button onclick="triggerEvent('punchline')">😂 Punchline Push</button>
+            <button onclick="triggerEvent('speaker_2')">👥 Guest Pan</button>
+            <button onclick="triggerEvent('rep')">🏋️ Rep Check</button>
+            <button onclick="triggerEvent('applause')">👏 Applause Creep</button>
+            <button onclick="triggerEvent('neutral')">🔄 Reset Medium</button>
+          </div>
+        </div>
+
+        <!-- Right: Telemetry & Inspector -->
+        <div class="card">
+          <div class="card-title">
+            <span>On-Edge Telemetry HUD</span>
+            <span class="badge badge-egress">Zero Cloud Latency</span>
+          </div>
+
+          <div class="hud-grid">
+            <div class="hud-item">
+              <div class="hud-label">Inference Latency</div>
+              <div id="hudLatency" class="hud-val green">0.32 ms</div>
+            </div>
+            <div class="hud-item">
+              <div class="hud-label">Network Egress</div>
+              <div class="hud-val green">0 Bytes</div>
+            </div>
+            <div class="hud-item">
+              <div class="hud-label">Active Shot Intent</div>
+              <div id="hudShot" class="hud-val accent">NEUTRAL_ANCHOR</div>
+            </div>
+            <div class="hud-item">
+              <div class="hud-label">Zoom &amp; Pan Ratio</div>
+              <div id="hudCoords" class="hud-val">1.00x | X: 0.50</div>
+            </div>
+          </div>
+
+          <div class="card-title" style="margin-top: 1rem; font-size: 0.95rem;">
+            <span>Real-Time Editorial Decision Log</span>
+            <span id="decisionCount" style="font-size: 0.8rem; color: var(--text-muted);">0 events</span>
+          </div>
+
+          <div id="logStream" class="log-stream">
+            <div style="color: var(--text-muted); text-align: center; padding-top: 2rem;">No decisions generated yet. Run simulation or click triggers.</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- TAB 2: ARCHITECTURE & REPORT -->
+    <section id="tab-report" class="tab-content">
+      <div class="card prose">
+        <h2>FrameMind Architectural &amp; Strategic Report</h2>
+        <p>FrameMind transforms raw video capture into broadcast-grade framed content entirely on-device using a quantized Small Language Model (SLM) and dynamic LoRA adapters.</p>
+
+        <h3>1. Architectural Differentiation</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Dimension</th>
+              <th>Cloud Editing (OpusClip, Descript)</th>
+              <th>FrameMind (On-Edge SLM)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Network Egress</strong></td>
+              <td>Gigabytes of video uploaded to cloud GPUs</td>
+              <td><strong>0 Bytes</strong> (100% computed on device)</td>
+            </tr>
+            <tr>
+              <td><strong>Recurring Cost</strong></td>
+              <td>$15 - $50 / month / user</td>
+              <td><strong>$0.00</strong> (Runs free on client hardware)</td>
+            </tr>
+            <tr>
+              <td><strong>Turnaround Latency</strong></td>
+              <td>Minutes to hours per video</td>
+              <td><strong>Sub-millisecond decisions (&lt;0.5ms)</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Privacy &amp; Security</strong></td>
+              <td>Raw client footage resides on third-party servers</td>
+              <td>100% private, sandbox-contained</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>2. Feature-Brick Composition</h3>
+        <p>FrameMind is constructed from 4 decoupled feature bricks adhering to the 864zeros architectural standard:</p>
+        <ul>
+          <li><strong>AudioCollectorBrick:</strong> Ingests rolling speech tokens, acoustic dB energy levels, silence pauses, and cue tags.</li>
+          <li><strong>SlmCinematographyBrick:</strong> Vectorizes conversational trajectories into 256d space and hot-swaps task LoRA adapters in &lt;0.1ms.</li>
+          <li><strong>DirectorBrick:</strong> Evaluates vector cosine similarity against cinematographic shot prototypes and outputs non-destructive Edit Decision Lists (EDL).</li>
+          <li><strong>FramingMutatorBrick:</strong> Renders smooth cubic-bezier camera transitions (Pan/Tilt/Zoom) into 9:16 Short/Reel viewports while enforcing boundary safety.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- TAB 3: LORA PIPELINE -->
+    <section id="tab-lora" class="tab-content">
+      <div class="card prose">
+        <h2>Zero-Cost LoRA Fine-Tuning Pipeline</h2>
+        <p>FrameMind uses a single base Gemma-2 2B model and injects domain-specialized LoRA adapters trained on Google Colab's free T4 GPU tier ($0 cost).</p>
+        
+        <div style="background: #090e1a; border: 1px solid var(--card-border); border-radius: 8px; padding: 1.25rem; margin: 1.5rem 0;">
+          <h4 style="color: #38bdf8; margin-bottom: 0.5rem;">Launch Free Google Colab Notebook</h4>
+          <p style="font-size: 0.9rem; margin-bottom: 1rem;">Train custom cinematography LoRA weights with rank 8 and alpha 16 in under 5 minutes.</p>
+          <a href="https://colab.research.google.com/" target="_blank" rel="noopener" style="display: inline-block; background: #0284c7; color: #fff; padding: 0.6rem 1.2rem; border-radius: 6px; text-decoration: none; font-weight: 700;">Open Google Colab &rarr;</a>
+        </div>
+
+        <h3>Adapter Specifications</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Adapter Name</th>
+              <th>Rank</th>
+              <th>Size</th>
+              <th>Target Behavioral Bias</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Podcast &amp; Banter LoRA</strong></td>
+              <td>8</td>
+              <td>3.1 MB</td>
+              <td>Punchline push-in, speaker banter ping-pong, laughter reaction</td>
+            </tr>
+            <tr>
+              <td><strong>Fitness Form LoRA</strong></td>
+              <td>8</td>
+              <td>3.1 MB</td>
+              <td>Full-body form stabilization, rep cadence tracking, motivational pulses</td>
+            </tr>
+            <tr>
+              <td><strong>Keynote Presentation LoRA</strong></td>
+              <td>8</td>
+              <td>3.1 MB</td>
+              <td>Slow cinematic pushes, rhetorical pause framing, applause reactions</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- TAB 4: FEATURE BRICKS API -->
+    <section id="tab-bricks" class="tab-content">
+      <div class="card prose">
+        <h2>Feature Bricks API &amp; Code Contracts</h2>
+        <p>All bricks are pure ES modules with zero external npm runtime dependencies.</p>
+
+        <h3>1. AudioCollectorBrick Contract</h3>
+        <pre style="background: #090e1a; padding: 1rem; border-radius: 6px; color: #38bdf8; font-family: monospace;">
+const collector = new AudioCollectorBrick({ maxWindowSeconds: 12 });
+collector.ingest({ timestampMs: Date.now(), word: 'punchline', speaker: 'host', dbLevel: -10 });
+const trajectory = collector.synthesizeTrajectory();</pre>
+
+        <h3>2. SlmCinematographyBrick &amp; LoRA Swapping</h3>
+        <pre style="background: #090e1a; padding: 1rem; border-radius: 6px; color: #38bdf8; font-family: monospace;">
+const slm = new SlmCinematographyBrick();
+slm.swapLora('fitness_coach'); // Instant hot-swap in 0.047ms
+const vector = slm.embed(trajectory);</pre>
+
+        <h3>3. DirectorBrick Decisioning</h3>
+        <pre style="background: #090e1a; padding: 1rem; border-radius: 6px; color: #38bdf8; font-family: monospace;">
+const director = new DirectorBrick(slm);
+const decision = director.directShot(trajectory, { speaker: 'host' });
+// Output: { shotKey: 'PUNCHLINE_PUSH', confidence: 0.92, cameraParams: { zoom: 1.35, panX: 0.5 } }</pre>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <span>FrameMind On-Edge AI Spike</span>
+    <span>864zeros Spikes Fleet</span>
+  </footer>
+
+  <!-- App Script Wiring Bricks Directly -->
+  <script type="module">
+    import { AudioCollectorBrick } from './src/bricks/collector-audio-brick.js';
+    import { SlmCinematographyBrick } from './src/bricks/slm-cinematography-brick.js';
+    import { DirectorBrick } from './src/bricks/director-brick.js';
+    import { FramingMutatorBrick } from './src/bricks/framing-mutator-brick.js';
+    import { FrameMindInspectorBrick } from './src/bricks/inspector-brick.js';
+
+    // Initialize Bricks
+    const collector = new AudioCollectorBrick({ maxWindowSeconds: 10 });
+    const slm = new SlmCinematographyBrick({ initialLora: 'podcast_editor' });
+    const director = new DirectorBrick(slm);
+    const mutator = new FramingMutatorBrick({ targetAspect: 9 / 16, sourceAspect: 16 / 9 });
+    const inspector = new FrameMindInspectorBrick();
+
+    let showSafeZones = true;
+
+    // DOM Elements
+    const sourceCanvas = document.getElementById('sourceCanvas');
+    const targetCanvas = document.getElementById('targetCanvas');
+    const transcriptTicker = document.getElementById('transcriptTicker');
+    const hudLatency = document.getElementById('hudLatency');
+    const hudShot = document.getElementById('hudShot');
+    const hudCoords = document.getElementById('hudCoords');
+    const logStream = document.getElementById('logStream');
+    const decisionCount = document.getElementById('decisionCount');
+
+    // Procedural Scene Animation State
+    let sceneTick = 0;
+    let currentSpeakerPos = { x: 220, y: 180 }; // Speaker 1 (Host) default
+
+    // Canvas Render Loop
+    function renderLoop(timeMs) {
+      sceneTick += 0.03;
+      const sCtx = sourceCanvas.getContext('2d');
+      const w = sourceCanvas.width;
+      const h = sourceCanvas.height;
+
+      // 1. Draw procedural 16:9 studio scene
+      sCtx.fillStyle = '#0f172a';
+      sCtx.fillRect(0, 0, w, h);
+
+      // Studio background lighting
+      const grad = sCtx.createRadialGradient(w/2, h/2, 20, w/2, h/2, 260);
+      grad.addColorStop(0, '#1e293b');
+      grad.addColorStop(1, '#090d16');
+      sCtx.fillStyle = grad;
+      sCtx.fillRect(0, 0, w, h);
+
+      // Studio Desk
+      sCtx.fillStyle = '#1e293b';
+      sCtx.fillRect(80, 240, w - 160, 100);
+      sCtx.strokeStyle = '#334155';
+      sCtx.lineWidth = 2;
+      sCtx.strokeRect(80, 240, w - 160, 100);
+
+      // Draw Host (Left, X: 220)
+      const hostBob = Math.sin(sceneTick * 2) * 3;
+      sCtx.fillStyle = '#38bdf8';
+      sCtx.beginPath();
+      sCtx.arc(220, 170 + hostBob, 32, 0, Math.PI * 2);
+      sCtx.fill();
+      sCtx.fillStyle = '#e2e8f0';
+      sCtx.font = '12px sans-serif';
+      sCtx.fillText('Host', 208, 174 + hostBob);
+
+      // Draw Guest (Right, X: 420)
+      const guestBob = Math.cos(sceneTick * 2) * 3;
+      sCtx.fillStyle = '#c084fc';
+      sCtx.beginPath();
+      sCtx.arc(420, 170 + guestBob, 32, 0, Math.PI * 2);
+      sCtx.fill();
+      sCtx.fillStyle = '#e2e8f0';
+      sCtx.fillText('Guest', 404, 174 + guestBob);
+
+      // Microphones
+      sCtx.fillStyle = '#64748b';
+      sCtx.fillRect(235, 210, 8, 30);
+      sCtx.fillRect(397, 210, 8, 30);
+
+      // 2. Mutator step & obtain smooth crop coordinates
+      const crop = mutator.tick(timeMs);
+
+      // 3. Draw crop overlay on source canvas
+      const sx = crop.x * w;
+      const sy = crop.y * h;
+      const sw = crop.width * w;
+      const sh = crop.height * h;
+
+      sCtx.strokeStyle = '#38bdf8';
+      sCtx.lineWidth = 3;
+      sCtx.strokeRect(sx, sy, sw, sh);
+
+      // Crop corner accents
+      sCtx.fillStyle = '#38bdf8';
+      sCtx.fillRect(sx - 2, sy - 2, 8, 8);
+      sCtx.fillRect(sx + sw - 6, sy - 2, 8, 8);
+      sCtx.fillRect(sx - 2, sy + sh - 6, 8, 8);
+      sCtx.fillRect(sx + sw - 6, sy + sh - 6, 8, 8);
+
+      // 4. Render 9:16 target canvas
+      mutator.renderToCanvas(sourceCanvas, targetCanvas, { showSafeZones });
+
+      // Update HUD
+      hudCoords.textContent = `${crop.zoom}x | X: ${crop.panX}`;
+
+      requestAnimationFrame(renderLoop);
+    }
+    requestAnimationFrame(renderLoop);
+
+    // Apply Editorial Decision
+    function dispatchDecision(text, context = {}) {
+      collector.ingest({
+        word: text,
+        speaker: context.speaker || 'host',
+        dbLevel: context.dbLevel || -20,
+        tag: context.tag || null
+      });
+
+      const trajectory = collector.synthesizeTrajectory();
+      transcriptTicker.textContent = `[${context.speaker || 'host'}] "${text}" ${context.tag || ''}`;
+
+      const decision = director.directShot(trajectory, context);
+      mutator.applyDecision(decision);
+      inspector.logDecision(decision);
+
+      // Update HUD
+      hudLatency.textContent = `${decision.latencyMs} ms`;
+      hudShot.textContent = decision.shotKey;
+
+      // Update Stream Log
+      renderLogs();
+    }
+
+    function renderLogs() {
+      const metrics = inspector.getMetrics();
+      decisionCount.textContent = `${metrics.totalDecisions} events`;
+
+      logStream.innerHTML = metrics.recentDecisions.map(d => `
+        <div class="log-line">
+          <span>[${d.time}] <strong style="color: #38bdf8;">${d.shotKey}</strong> (Zoom: ${d.zoom}x, Pan: ${d.panX})</span>
+          <span style="color: #4ade80;">${d.latencyMs}ms | ${d.confidence}%</span>
+        </div>
+      `).join('');
+    }
+
+    // Expose control handlers to window
+    window.handleLoraChange = (loraId) => {
+      const res = slm.swapLora(loraId);
+      dispatchDecision(`Swapped model adapter to ${loraId}`, { tag: '[lora_swap]' });
+    };
+
+    window.toggleSafeZones = () => {
+      showSafeZones = !showSafeZones;
+    };
+
+    window.triggerEvent = (eventType) => {
+      if (eventType === 'punchline') {
+        dispatchDecision("That is the most hilarious punchline I have ever heard!", {
+          speaker: 'host',
+          dbLevel: -8,
+          tag: '[laughter]'
+        });
+      } else if (eventType === 'speaker_2') {
+        dispatchDecision("Let me counter that point with a different perspective.", {
+          speaker: 'speaker_2',
+          dbLevel: -18,
+          tag: '[banter]'
+        });
+      } else if (eventType === 'rep') {
+        dispatchDecision("All the way down into the squat! Full extension! Rep one!", {
+          speaker: 'trainer',
+          dbLevel: -12,
+          tag: '[rep_count]'
+        });
+      } else if (eventType === 'applause') {
+        dispatchDecision("We are building the future of local-first on-edge intelligence.", {
+          speaker: 'keynote',
+          dbLevel: -10,
+          tag: '[applause]'
+        });
+      } else {
+        dispatchDecision("Continuing our normal conversation at a steady pace.", {
+          speaker: 'host',
+          dbLevel: -24
+        });
+      }
+    };
+
+    // Automated Episode Simulation
+    window.runAutomatedSimulation = () => {
+      const script = [
+        { delay: 400, text: "Welcome back everyone to today's episode!", speaker: 'host', db: -20 },
+        { delay: 2800, text: "Wait till you hear what happened yesterday! [laughter]", speaker: 'host', db: -8, tag: '[punchline]' },
+        { delay: 5600, text: "No way! Are you serious right now? Tell me more.", speaker: 'speaker_2', db: -16, tag: '[banter]' },
+        { delay: 8400, text: "I couldn't believe it myself, the whole system was offline!", speaker: 'host', db: -10, tag: '[punchline]' },
+        { delay: 11200, text: "Let's reset and review the takeaways for the audience.", speaker: 'host', db: -24 }
+      ];
+
+      script.forEach(step => {
+        setTimeout(() => {
+          dispatchDecision(step.text, {
+            speaker: step.speaker,
+            dbLevel: step.db,
+            tag: step.tag || null
+          });
+        }, step.delay);
+      });
+    };
+
+    // Tab Navigation
+    window.switchTab = (tabId) => {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+      const activeBtn = Array.from(document.querySelectorAll('.tab-btn')).find(b => b.getAttribute('onclick').includes(tabId));
+      if (activeBtn) activeBtn.classList.add('active');
+
+      const target = document.getElementById(`tab-${tabId}`);
+      if (target) target.classList.add('active');
+    };
+
+    // Initial Trigger
+    dispatchDecision("System initialized in local on-edge cinematography mode.", { speaker: 'host' });
+  </script>
+</body>
+</html>

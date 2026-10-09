@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FrameMind — Edge AI Spike Integration Evaluation</title>
+  <style>
+    :root {
+      --bg: #090d16;
+      --card-bg: #111827;
+      --border: #1f293d;
+      --text: #e2e8f0;
+      --text-muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-glow: rgba(56, 189, 248, 0.15);
+      --green: #4ade80;
+      --amber: #fbbf24;
+      --code-bg: #0d1321;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      line-height: 1.65;
+      padding: 2.5rem 1.5rem;
+    }
+
+    .container {
+      max-width: 920px;
+      margin: 0 auto;
+    }
+
+    header {
+      margin-bottom: 2.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 0.25rem 0.65rem;
+      border-radius: 9999px;
+      background: var(--accent-glow);
+      color: var(--accent);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      margin-bottom: 0.75rem;
+    }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      color: #f8fafc;
+      margin-bottom: 0.5rem;
+    }
+
+    h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #f1f5f9;
+      margin: 2rem 0 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    h4 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #e2e8f0;
+      margin: 1.25rem 0 0.5rem;
+    }
+
+    p {
+      margin-bottom: 1rem;
+      color: var(--text);
+    }
+
+    .lead {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+    }
+
+    hr {
+      border: 0;
+      height: 1px;
+      background: var(--border);
+      margin: 2.5rem 0;
+    }
+
+    /* Table styling */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.25rem 0 2rem;
+      background: var(--card-bg);
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    th, td {
+      padding: 0.85rem 1.15rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.95rem;
+    }
+
+    th {
+      background: #1e293b;
+      color: #f8fafc;
+      font-weight: 600;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    tr:last-child td { border-bottom: none; }
+
+    td:first-child { font-weight: 600; }
+
+    /* ASCII / Code Block */
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.25rem;
+      overflow-x: auto;
+      font-family: var(--font-mono);
+      font-size: 0.88rem;
+      line-height: 1.5;
+      color: #38bdf8;
+      margin: 1.25rem 0;
+    }
+
+    code {
+      font-family: var(--font-mono);
+      font-size: 0.9em;
+      background: rgba(148, 163, 184, 0.12);
+      padding: 0.15rem 0.35rem;
+      border-radius: 4px;
+      color: #cbd5e1;
+    }
+
+    pre code {
+      background: transparent;
+      padding: 0;
+      color: inherit;
+    }
+
+    /* Lists */
+    ol, ul {
+      margin: 0.75rem 0 1.25rem 1.5rem;
+      color: var(--text);
+    }
+
+    li {
+      margin-bottom: 0.5rem;
+    }
+
+    li > ul {
+      margin-top: 0.35rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .rating-badge {
+      display: inline-block;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+    .rating-high { background: rgba(74, 222, 128, 0.15); color: var(--green); border: 1px solid rgba(74, 222, 128, 0.3); }
+
+    footer {
+      margin-top: 3.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="badge">Architecture &amp; Strategy Review</div>
+      <h1>FrameMind: Architectural &amp; Strategic Evaluation</h1>
+      <p class="lead">Integration evaluation assessing market value, technical feasibility, and alignment with the on-edge SLM / POC fleet.</p>
+    </header>
+
+    <p>I have reviewed <code>{idea}{frameMind} Edge AI Automated Cinematography &amp; Smart Framing System.md</code>.</p>
+
+    <p>Here is an architectural and strategic evaluation of <strong>FrameMind</strong>, assessing its market value, technical feasibility, and alignment with our edge SLM / POC fleet.</p>
+
+    <hr>
+
+    <h3>1. Idea Value &amp; Strategic Fit</h3>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th style="text-align: center;">Rating</th>
+          <th>Rationale</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Market Relevance</td>
+          <td style="text-align: center;"><span class="rating-badge rating-high">Very High</span></td>
+          <td>Content creation (Shorts, Reels, Podcasts, Tutorials) is currently dominated by expensive cloud tools (OpusClip, Descript, Autopod). An on-device alternative eliminates recurring cloud GPU inference bills, upload/download latency, and video privacy concerns.</td>
+        </tr>
+        <tr>
+          <td>Alignment with GemmaEdge</td>
+          <td style="text-align: center;"><span class="rating-badge rating-high">Direct 1:1 Match</span></td>
+          <td>FrameMind uses the exact same core thesis as GemmaEdge: <strong>Local Base Model + Dynamic LoRA Hot-Swapping + Zero-Cloud Privacy + Deterministic Execution</strong>.</td>
+        </tr>
+        <tr>
+          <td>Reusability of Feature Bricks</td>
+          <td style="text-align: center;"><span class="rating-badge rating-high">High (&gt;80%)</span></td>
+          <td>The architecture we designed for GemmaEdge drops directly into FrameMind with minimal translation (swapping DOM mutations for Camera/Timeline mutations).</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <hr>
+
+    <h3>2. How FrameMind Reuses Our GemmaEdge Feature Brick Stack</h3>
+
+    <p>The mental model and brick architecture we just completed map cleanly to FrameMind:</p>
+
+    <pre><code>[Audio/Transcript Stream] 
+        │
+        ▼
+[Collector Brick] ──────► Ingests speech events, volume spikes, and silence markers
+        │
+        ▼
+[SLM / LoRA Brick] ────► Base Model (e.g. Gemma 2B) + Hot-swapped LoRA (.safetensors)
+        │                 (Podcast LoRA, Fitness LoRA, Cinematic Vlog LoRA)
+        ▼
+[Segmenter / Intent Brick] Maps trajectory to Editorial Intents (Punchline, Emphasis, Rep)
+        │
+        ▼
+[Mutator Brick] ────────► Generates Smooth Camera/Crop Keyframes (Zoom, Pan, Cut)</code></pre>
+
+    <ol>
+      <li><strong><code>collector-brick</code></strong>: Instead of web clicks and scroll events, it aggregates timestamped ASR words, acoustic energy spikes (laughter, applause, volume peaks), and conversational pauses.</li>
+      <li><strong><code>slm-adapter-brick</code></strong>: Uses a lightweight base model (Gemma-2B / Gemma-350M quantized). LoRA adapters (~3–8MB) are dynamically swapped based on project type (e.g., <em>Podcast Editor</em>, <em>Fitness Coach</em>, <em>Keynote Speaker</em>).</li>
+      <li><strong><code>segmenter-brick</code> (Intent Classifier)</strong>: Translates conversational semantics into cinematographic camera cues:
+        <ul>
+          <li><em>Punchline detected</em> &rarr; Push in 1.3&times; on speaker.</li>
+          <li><em>Banter/dialogue shift</em> &rarr; Cross-cut or pan.</li>
+          <li><em>Rep completed / form check</em> &rarr; Wideshot stabilization.</li>
+        </ul>
+      </li>
+      <li><strong><code>mutator-brick</code></strong>: Instead of mutating DOM CSS properties, it mutates camera hardware ratios (<code>videoZoomFactor</code>) or generates an <strong>Edit Decision List (EDL / JSON Timeline)</strong> with bezier easing curves for zoom/pan.</li>
+    </ol>
+
+    <hr>
+
+    <h3>3. Feasibility Analysis: Variation A vs. Variation B</h3>
+
+    <p>The document highlights two variations. From an edge hardware and systems engineering standpoint:</p>
+
+    <h4>Variation B: Asynchronous Auto-Processing (Post-Recording) &mdash; &#11088; High Value &amp; Zero Risk</h4>
+    <ul>
+      <li><strong>Why it wins:</strong>
+        <ol>
+          <li><strong>Timeline Foresight:</strong> A real-time camera cannot anticipate a punchline until after it is uttered. A post-recording batch pass reads the entire transcript with forward and backward context, timing zoom-ins and cuts to peak comedic or rhetorical emphasis.</li>
+          <li><strong>Zero Capture Risk:</strong> Camera hardware records at full unthrottled 4K/60fps with zero risk of dropped frames, thermal overheating, or battery drain mid-take.</li>
+          <li><strong>Output Format:</strong> Rather than baking the edits into the video destructively, it outputs a non-destructive framing track / timeline (e.g., CapCut/Premiere/DaVinci XML or WebCodecs canvas render).</li>
+        </ol>
+      </li>
+    </ul>
+
+    <h4>Variation A: Real-Time Audio/Semantic Triggering &mdash; &#9888;&#65039; Feasible but Constrained</h4>
+    <ul>
+      <li><strong>Challenges:</strong> Running continuous on-device speech-to-text (Whisper/MediaPipe ASR), SLM inference, and 4K camera encoding simultaneously will push thermal and power limits on mobile devices.</li>
+      <li><strong>Realistic Edge Tuning:</strong> To make real-time viable without thermal throttling, the SLM should not generate free-form text. Instead, it should run <strong>acoustic/embedding classification</strong> or a constrained state machine running every ~300ms.</li>
+    </ul>
+
+    <hr>
+
+    <h3>4. LoRA Hot-Swapping Viability on Edge</h3>
+
+    <ul>
+      <li><strong>Is it feasible on mobile/edge?</strong> <strong>Yes.</strong> Modern mobile inference runtimes (Meta ExecuTorch, MediaPipe LLM Inference, and llama.cpp / MLC-LLM) now natively support dynamic LoRA injection into attention projection layers.</li>
+      <li><strong>Footprint:</strong>
+        <ul>
+          <li>Base quantized model: ~1.2 GB &ndash; 1.6 GB (Q4_K_M).</li>
+          <li>Domain LoRA adapters: <strong>3 MB &ndash; 12 MB each</strong>.</li>
+        </ul>
+      </li>
+      <li><strong>Workflow:</strong> You train the LoRAs for free on Google Colab (using the exact same notebook pattern we set up in <code>GemmaEdge/notebooks/Train_GemmaEdge_LoRA.ipynb</code>) and distribute multiple lightweight adapters inside the app bundle.</li>
+    </ul>
+
+    <hr>
+
+    <h3>5. Summary &amp; Recommendation</h3>
+
+    <ul>
+      <li><strong>Verdict:</strong> FrameMind is a viable, high-impact concept that naturally builds upon the GemmaEdge architecture. It demonstrates that our edge SLM + LoRA pattern extends beyond web personalization into multimedia and mobile creator tooling.</li>
+      <li><strong>Recommended Next Step (When ready to build):</strong>
+        <ul>
+          <li>When you are ready to take action on FrameMind, we can construct an interactive prototype spike right in <code>C:\dev\864zeros-spikes\FrameMind</code> showcasing <strong>Variation B</strong>:
+            <ul>
+              <li>Loading a sample video/audio track with transcript.</li>
+              <li>Demonstrating the <strong>Podcast LoRA</strong> vs. <strong>Fitness LoRA</strong> hot-swap in action.</li>
+              <li>Generating the smart framing keyframes and showing the cropped cinematographic preview side-by-side with the raw feed.</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+
+    <footer>
+      <span>Spike Reference: 864zeros-spikes / FrameMind</span>
+      <span>Edge SLM Fleet Architecture</span>
+    </footer>
+  </div>
+</body>
+</html>

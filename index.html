@@ -2,12 +2,164 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="refresh" content="0; url=GemmaEdge/">
-  <title>864zeros Spikes Fleet</title>
-  <script>window.location.href = "GemmaEdge/";</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>864zeros Spikes &amp; R&amp;D Fleet</title>
+  <style>
+    :root {
+      --bg: #090d16;
+      --card-bg: #111827;
+      --border: #1f293d;
+      --text: #e2e8f0;
+      --text-muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-glow: rgba(56, 189, 248, 0.15);
+      --green: #4ade80;
+      --purple: #c084fc;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      line-height: 1.65;
+      padding: 3rem 1.5rem;
+    }
+    .container { max-width: 960px; margin: 0 auto; }
+    header { margin-bottom: 2.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
+    .badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 0.25rem 0.65rem;
+      border-radius: 9999px;
+      background: var(--accent-glow);
+      color: var(--accent);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      margin-bottom: 0.75rem;
+    }
+    h1 { font-size: 2.4rem; font-weight: 800; color: #f8fafc; margin-bottom: 0.5rem; letter-spacing: -0.025em; }
+    .lead { font-size: 1.1rem; color: var(--text-muted); }
+    h2 { font-size: 1.35rem; font-weight: 700; color: #f1f5f9; margin: 2rem 0 1rem; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+    }
+    .card-tag {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      width: fit-content;
+      margin-bottom: 0.75rem;
+    }
+    .tag-blue { background: rgba(56, 189, 248, 0.15); color: var(--accent); border: 1px solid rgba(56, 189, 248, 0.3); }
+    .tag-purple { background: rgba(192, 132, 252, 0.15); color: var(--purple); border: 1px solid rgba(192, 132, 252, 0.3); }
+    .card h3 { font-size: 1.25rem; color: #f8fafc; margin-bottom: 0.5rem; }
+    .card p { color: #cbd5e1; margin-bottom: 1.25rem; font-size: 0.95rem; flex: 1; }
+    .links { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+    .btn {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.88rem;
+      transition: background 0.15s ease;
+    }
+    .btn-primary { background: #0284c7; color: #fff; }
+    .btn-primary:hover { background: #0369a1; }
+    .btn-secondary { background: #1e293b; color: #e2e8f0; border: 1px solid var(--border); }
+    .btn-secondary:hover { background: #273549; }
+    .card-footer-links {
+      background: #0d1321;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .card-footer-links a { color: var(--accent); text-decoration: none; font-weight: 600; }
+    .card-footer-links a:hover { text-decoration: underline; }
+    footer {
+      margin-top: 3.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+    }
+  </style>
 </head>
-<body style="font-family:sans-serif; text-align:center; padding:3rem;">
-  <h2>864zeros Spikes &amp; R&amp;D Fleet</h2>
-  <p>Redirecting to <a href="GemmaEdge/">GemmaEdge Portal</a>...</p>
+<body>
+  <div class="container">
+    <header>
+      <div class="badge">Research &amp; Development Fleet</div>
+      <h1>864zeros Spikes Fleet</h1>
+      <p class="lead">Autonomous, on-edge intelligence prototypes, Small Language Model (SLM) engines, and zero-cloud feature bricks.</p>
+    </header>
+
+    <h2>Active Spikes</h2>
+
+    <div class="grid">
+      <!-- GemmaEdge Card -->
+      <div class="card">
+        <div class="card-tag tag-blue">On-Edge Web Personalization</div>
+        <h3>1. GemmaEdge</h3>
+        <p>Inverts traditional cloud CDP/Alloy telemetry stacks into an in-memory, 100% on-device behavioral vectorizer and DOM experience mutator running in &lt;1.0ms.</p>
+        <div class="links">
+          <a class="btn btn-primary" href="GemmaEdge/">Launch Showcase &rarr;</a>
+          <a class="btn btn-secondary" href="GemmaEdge/REPORT_GemmaEdge_Spike.html">Executive Report</a>
+        </div>
+      </div>
+
+      <!-- FrameMind Card -->
+      <div class="card">
+        <div class="card-tag tag-purple">Smart Framing &amp; Cinematography</div>
+        <h3>2. FrameMind</h3>
+        <p>Translates audio speech tokens and acoustic energy into broadcast-quality camera framing and 9:16 vertical crop decisions using on-device Gemma SLM and LoRA adapters.</p>
+        <div class="links">
+          <a class="btn btn-primary" href="FrameMind/index.html">Launch Director Testbed &rarr;</a>
+          <a class="btn btn-secondary" href="FrameMind/REPORT_FrameMind_Spike.html">Executive Report</a>
+        </div>
+      </div>
+    </div>
+
+    <h2>Engineering Governance &amp; Options</h2>
+
+    <div class="card-footer-links">
+      <div>
+        <strong style="color: #f8fafc;">Spikes Backlog &amp; Roadmap:</strong>
+        <span style="color: var(--text-muted); margin-left: 0.5rem;">Immediate tasks &amp; architecture milestones</span>
+      </div>
+      <div style="display: flex; gap: 1.25rem;">
+        <a href="BACKLOG.html">View Backlog &rarr;</a>
+        <a href="docs/PRODUCTION-OPTION-MOBILE-HYBRID-WRAPPER.html">Mobile Hybrid Option &rarr;</a>
+      </div>
+    </div>
+
+    <footer>
+      <span>864zeros Spikes Fleet</span>
+      <span>100% On-Edge &bull; Zero Network Egress</span>
+    </footer>
+  </div>
 </body>
 </html>
