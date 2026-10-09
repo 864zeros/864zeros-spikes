@@ -8,7 +8,7 @@ Engineering prototypes, architectural spikes, and experimental testbeds for the 
 
 ### [Sovereign Edge Intelligence: Rejuvenating Low-Rank Adaptation (LoRA) for Real-Time On-Device SLM Feature Bricks](docs/RESEARCH-PAPER-SOVEREIGN-EDGE-SLM-LORA.md)
 * **Document Reference:** [docs/RESEARCH-PAPER-SOVEREIGN-EDGE-SLM-LORA.md](docs/RESEARCH-PAPER-SOVEREIGN-EDGE-SLM-LORA.md) ([HTML Version](docs/RESEARCH-PAPER-SOVEREIGN-EDGE-SLM-LORA.html))
-* **Overview:** Open pattern specification proving the 50x mathematical leverage of LoRA on SLMs (1B–3B), sub-0.05ms adapter hot-swapping, and the AETHER feature-brick pattern across GemmaEdge and FrameMind.
+* **Overview:** Open pattern specification formalizing the 3.56x subspace capacity ratio of LoRA on SLMs (Gemma-2 2B vs. 70B), sub-microsecond adapter hot-swapping, and the AETHER feature-brick pattern across GemmaEdge and FrameMind.
 * **Corporate Evangelism Ready:** Vendor-neutral body, abstractive leap from Google DeepMind's Gemma-2/EmbeddingGemma publications.
 
 ---
